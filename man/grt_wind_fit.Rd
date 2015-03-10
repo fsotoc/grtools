@@ -27,7 +27,7 @@ parameters become closer to be "truly random."}
 \value{
 An object of class "\code{grt_wind_fit}."
 
-The function \code{\link[=wald.grt_wind_fit]{wald}} is used to obtain the
+The function \code{\link{wald}} is used to obtain the
 results of Wald tests of perceptual separability, decisional separability and
 perceptual independence, using the maximum likelihood parameters estimated
 through \code{grt_wind_fit}.
