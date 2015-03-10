@@ -1,0 +1,22 @@
+#' @export
+print.sumstats_macro <- function(x){
+  cat("Test of marginal response invariance:\n")
+  x$marginal_response_invariance$z <- round(as.numeric(x$marginal_response_invariance$z),2)
+  x$marginal_response_invariance$p_value <- round(as.numeric(x$marginal_response_invariance$p_value),5)
+  names(x$marginal_response_invariance) <- c("Test", "Z stat", "P-value", "Pass?")
+  print(x$marginal_response_invariance, row.names=F)
+  cat("\nTest of equal marginal d':\n")
+  x$equal_marginal_d_prime$d1 <- round(as.numeric(x$equal_marginal_d_prime$d1),2)
+  x$equal_marginal_d_prime$d2 <- round(as.numeric(x$equal_marginal_d_prime$d2),2)  
+  x$equal_marginal_d_prime$z <- round(as.numeric(x$equal_marginal_d_prime$z),2)
+  x$equal_marginal_d_prime$p_value <- round(as.numeric(x$equal_marginal_d_prime$p_value),5)
+  names(x$equal_marginal_d_prime) <- c("Test", "d'1", "d'2", "Z stat", "P-value", "Pass?")
+  print(x$equal_marginal_d_prime, row.names=F)
+  cat("\nTest of equal marginal c:\n")
+  x$equal_marginal_c$c1 <- round(as.numeric(x$equal_marginal_c$c1),2)
+  x$equal_marginal_c$c2 <- round(as.numeric(x$equal_marginal_c$c2),2)  
+  x$equal_marginal_c$z <- round(as.numeric(x$equal_marginal_c$z),2)
+  x$equal_marginal_c$p_value <- round(as.numeric(x$equal_marginal_c$p_value),5)
+  names(x$equal_marginal_c) <- c("Test", "c1", "c2", "Z stat", "P-value", "Pass?")
+  print(x$equal_marginal_c, row.names=F)
+}
