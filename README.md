@@ -1,12 +1,12 @@
 # grtools
-**R package for analysis of perceptual independence using general recognition theory.**
+**R package for the analysis of perceptual independence using general recognition theory.**
 
 **grtools** provides functions for the following analyses:
 
 1. Model-based analyses of separability and independence with GRT-wIND (Soto et al., 2015) for the 2x2 identification experiment.
 2. Model-based analyses of separability and independence with traditional GRT models for the 2x2 identification experiment (Ashby & Soto, 2015).
 3. Summary statistics analysis (i.e. Kadlec's MDSDA; see Kadlec & Townsend, 1992) for the 2x2 identification experiment.
-4. Summary statistic analysis for the 2x2 Garner filtering task (Ashby & Maddox, 1994).
+4. Summary statistics analysis for the 2x2 Garner filtering task (Ashby & Maddox, 1994).
 
 **grtools** requires [Rcpp](http://cran.r-project.org/web/packages/Rcpp/index.html) to work, which in turns requires a development environment with a suitable compiler. If you are getting compiling errors, see the [Rcpp FAQ](http://cran.r-project.org/web/packages/Rcpp/vignettes/Rcpp-FAQ.pdf), particularly points 1.2 and 1.3.
 
@@ -17,7 +17,7 @@ library(grtools)
 ?grtools
 ```
 
-This will show you links to help files (with examples) for each of the main analyses included in **grtools**.
+This will open a document that includes links to help documentation for each of the main analyses included in **grtools** (including examples).
 
 **Note that this package is still under development. This is a pre-release version that has not been extensively tested. Also, documentation for many of the functions is missing/incomplete.**
 
