@@ -8,7 +8,12 @@
 3. Summary statistics analysis (i.e. Kadlec's MDSDA; see Kadlec & Townsend, 1992) for the 2x2 identification experiment.
 4. Summary statistics analysis for the 2x2 Garner filtering task (Ashby & Maddox, 1994).
 
-**grtools** requires [Rcpp](http://cran.r-project.org/web/packages/Rcpp/index.html) to work, which in turns requires a development environment with a suitable compiler. If you are getting compiling errors, see the [Rcpp FAQ](http://cran.r-project.org/web/packages/Rcpp/vignettes/Rcpp-FAQ.pdf), particularly points 1.2 and 1.3.
+The easiest way to instal **grtools** and its dependencies is using devtools. In the R console, type:
+
+```R
+install.packages("devtools")
+devtools::install_github("fsotoc/grtools", dependencies="Imports")
+```
 
 After installation. Type the following in the R console:
 
@@ -18,6 +23,8 @@ library(grtools)
 ```
 
 This will open a document that includes links to help documentation for each of the main analyses included in **grtools** (including examples).
+
+**grtools** requires [Rcpp](http://cran.r-project.org/web/packages/Rcpp/index.html) to work, which in turns requires a development environment with a suitable compiler. If you are getting compiling errors, see the [Rcpp FAQ](http://cran.r-project.org/web/packages/Rcpp/vignettes/Rcpp-FAQ.pdf), particularly points 1.2 and 1.3.
 
 **Note that this package is still under development. This is a pre-release version that has not been extensively tested. Also, documentation for many of the functions is missing/incomplete.**
 
