@@ -45,7 +45,7 @@ data[[5]] <- matrix(c(89,17,6,4,4,81,8,6,14,7,86,1,11,25,17,26),nrow=4,ncol=4,by
 fitted_model <- grt_wind_fit(data)
 
 #' # run the wald tests
-fitted_model <- wald(fitted_models, data)
+fitted_model <- wald(fitted_model, data)
 
 # see the results
 summary(fitted_model)

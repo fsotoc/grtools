@@ -98,7 +98,7 @@ summary(fitted_model)
 
 # a data frame with the values of all individual parameters is available in
 # in fitted_model$indpar
-model$indpar
+fitted_model$indpar
 }
 \references{
 Soto, F. A., Musgrave, R., Vucovich, L., & Ashby, F. G. (2015).

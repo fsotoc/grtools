@@ -4,7 +4,7 @@
 \alias{grt_hm_fit}
 \title{Fit a hierarchy of traditional GRT models to identification data}
 \usage{
-grt_hm_fit(cmat, rand_pert = 0.3, nreps = 5, control = list())
+grt_hm_fit(cmat, rand_pert = 0.3, n_reps = 5, control = list())
 }
 \arguments{
 \item{cmat}{A 4x4 confusion matrix (see Details).}
@@ -14,16 +14,16 @@ parameters. Defaults to 0.3. With a value of zero, the optimization is started e
 default starting parameters (see Details). As the value of rand_pert is
 increased, the starting parameters become closer to be "truly random."}
 
+\item{n_reps}{Number of times the optimization algorithm should be run, each time
+with a different value for the starting parameters. The function will return the
+model with a highest log-likelihood from all the runs. The value of \code{n_reps}
+defaults to five.}
+
 \item{control}{A list of optional control parameters for the \code{optim} function. See
   \code{\link[stats]{optim}}. Note that the parameter \code{ndeps} entered
   here should be a single number instead of the vector that is usually passed
   to \code{optim}. This single value is repeated inside \code{grt_hm_fit} to
   create the appropriate vectors.}
-
-\item{n_reps}{Number of times the optimization algorithm should be run, each time
-with a different value for the starting parameters. The function will return the
-model with a highest log-likelihood from all the runs. The value of \code{nreps}
-defaults to five.}
 }
 \value{
 An object of class "\code{grt_hm_fit}."
@@ -71,7 +71,7 @@ Note that a random value will be added to the default starting parameters if
 \examples{
 # Create a confusion matrix
 # Inside the c(...) below, we enter the data from row 1 in the
-matrix, then from row 2, etc.
+# matrix, then from row 2, etc.
 cmat <- matrix(c(100,1,9,8,
                        10,110,7,4,
                        31,3,80,10,

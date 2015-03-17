@@ -1,6 +1,13 @@
-#' @export
-plot.grt_hm_fit <- function(model, labels=c("dim A", "dim B"), cont_w=0.8){
-  # cont_w determines the width of the ellipses
+#' Plot a \code{grt_hm_fit} object
+#' 
+#' Plot the object returned by \code{\link{grt_hm_fit}}
+#' 
+#' @param model A \code{grt_hm_fit} object
+#' @param labels Optional names for the labels of dimensions A and B
+#' @param ellipse_width Parameter controlling the width of the drawn ellipses
+#' #' @export
+plot.grt_hm_fit <- function(model, labels=c("dim A", "dim B"), ellipse_width=0.8){
+  # ellipse_width determines the width of the ellipses
   # labels determines the labels for each axis
   
   model <- model$best_model
@@ -32,7 +39,7 @@ plot.grt_hm_fit <- function(model, labels=c("dim A", "dim B"), cont_w=0.8){
     center <- model$means[i,]
     sigma.inv <- solve(model$covmat[[i]])
     z <- mapply(ellipse, as.vector(rep(x,n)), as.vector(outer(rep(0,n), y, `+`)))
-    contour(x,y,matrix(z,n,n), levels=cont_w,drawlabels=F, add=T)
+    contour(x,y,matrix(z,n,n), levels=ellipse_width,drawlabels=F, add=T)
   }
   
   # add decision bounds

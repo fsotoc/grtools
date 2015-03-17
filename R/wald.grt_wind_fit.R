@@ -41,7 +41,7 @@
 #' fitted_model <- grt_wind_fit(data)
 #' 
 #' #' # run the wald tests
-#' fitted_model <- wald(fitted_models, data)
+#' fitted_model <- wald(fitted_model, data)
 #' 
 #' # see the results
 #' summary(fitted_model)

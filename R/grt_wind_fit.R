@@ -90,7 +90,7 @@
 #' 
 #' # a data frame with the values of all individual parameters is available in
 #' # in fitted_model$indpar
-#' model$indpar
+#' fitted_model$indpar
 #' 
 #' @export
 grt_wind_fit <- function(cmats, start_params=c(), rand_pert=0.3, control=list(maxit=1000, factr=1e+10)) {  

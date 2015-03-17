@@ -12,7 +12,7 @@
 #'   increased, the starting parameters become closer to be "truly random."
 #' @param n_reps Number of times the optimization algorithm should be run, each time
 #' with a different value for the starting parameters. The function will return the
-#' model with a highest log-likelihood from all the runs. The value of \code{nreps}
+#' model with a highest log-likelihood from all the runs. The value of \code{n_reps}
 #' defaults to five.
 #' @param control A list of optional control parameters for the \code{optim} function. See 
 #'   \code{\link[stats]{optim}}. Note that the parameter \code{ndeps} entered 
@@ -64,7 +64,7 @@
 #' @examples 
 #' # Create a confusion matrix
 #' # Inside the c(...) below, we enter the data from row 1 in the 
-#' matrix, then from row 2, etc.
+#' # matrix, then from row 2, etc.
 #' cmat <- matrix(c(100,1,9,8,
 #'                        10,110,7,4,
 #'                        31,3,80,10,
@@ -82,10 +82,10 @@
 #' 
 #' @export
 #' 
-grt_hm_fit <- function(cmat, rand_pert=0.3, nreps=5, control=list()){
+grt_hm_fit <- function(cmat, rand_pert=0.3, n_reps=5, control=list()){
   
   # fit all models 
-  fitted_models <- fit_grt_models(cmat, rand_pert=rand_pert, nreps=nreps, control=control)
+  fitted_models <- fit_grt_models(cmat, rand_pert=rand_pert, n_reps=n_reps, control=control)
   
   # order all models according to AIC
   o_aic <- order_aic(fitted_models)
@@ -277,7 +277,7 @@ grt_hm_fit <- function(cmat, rand_pert=0.3, nreps=5, control=list()){
 # Function that actually performs maximum-likelihood estimation
 # for all models:
 
-fit_grt_models <- function(cmat, rand_pert=0, nreps=1, control=control){     
+fit_grt_models <- function(cmat, rand_pert=0, n_reps=1, control=control){     
   
   # if ndeps was not selected by the user, assign a default value
   if (is.null(control[["ndeps"]])) {
@@ -292,7 +292,7 @@ fit_grt_models <- function(cmat, rand_pert=0, nreps=1, control=control){
   low_params <- c(-Inf, -Inf, -Inf, -Inf)
   high_params <- c(Inf, Inf, Inf, Inf)
   min_nll <- Inf
-  for(i in 1:nreps) {
+  for(i in 1:n_reps) {
     init_par <- rand_start(start_params, low_params, high_params, rand_pert)
     candidate <- optim(par=init_par, fn=negloglik_mod1, data=cmat, 
                        method="L-BFGS-B", lower=low_params, upper=high_params, 
@@ -310,7 +310,7 @@ fit_grt_models <- function(cmat, rand_pert=0, nreps=1, control=control){
   low_params <- c(-Inf,-Inf,-Inf,-Inf,-Inf,-Inf)
   high_params <- c(Inf,Inf,Inf,Inf,Inf,Inf)
   min_nll <- Inf
-  for(i in 1:nreps){
+  for(i in 1:n_reps){
     init_par <- rand_start(start_params,low_params,high_params,rand_pert)
     candidate <- optim(par=init_par, fn=negloglik_mod2, data=cmat, 
                        method="L-BFGS-B", lower=low_params, upper=high_params, 
@@ -328,7 +328,7 @@ fit_grt_models <- function(cmat, rand_pert=0, nreps=1, control=control){
   low_params <- c(-Inf,-Inf,-Inf,-Inf,-Inf,-Inf)
   high_params <- c(Inf,Inf,Inf,Inf,Inf,Inf)
   min_nll <- Inf
-  for(i in 1:nreps){
+  for(i in 1:n_reps){
     init_par <- rand_start(start_params,low_params,high_params,rand_pert)
     candidate <- optim(par=init_par, fn=negloglik_mod3, data=cmat, 
                        method="L-BFGS-B", lower=low_params, upper=high_params, 
@@ -346,7 +346,7 @@ fit_grt_models <- function(cmat, rand_pert=0, nreps=1, control=control){
   low_params <- c(-Inf,-Inf,-1,-Inf,-Inf)
   high_params <- c(Inf,Inf,1,Inf,Inf)
   min_nll <- Inf
-  for(i in 1:nreps){
+  for(i in 1:n_reps){
     init_par <- rand_start(start_params,low_params,high_params,rand_pert)
     candidate <- optim(par=init_par, fn=negloglik_mod4, data=cmat, 
                        method="L-BFGS-B", lower=low_params, upper=high_params, 
@@ -364,7 +364,7 @@ fit_grt_models <- function(cmat, rand_pert=0, nreps=1, control=control){
   low_params <- c(-Inf,-Inf,-Inf,-Inf,-1,-Inf,-Inf)
   high_params <- c(Inf,Inf,Inf,Inf,1,Inf,Inf)
   min_nll <- Inf
-  for(i in 1:nreps){
+  for(i in 1:n_reps){
     init_par <- rand_start(start_params,low_params,high_params,rand_pert)
     candidate <- optim(par=init_par, fn=negloglik_mod5, data=cmat, 
                        method="L-BFGS-B", lower=low_params, upper=high_params, 
@@ -382,7 +382,7 @@ fit_grt_models <- function(cmat, rand_pert=0, nreps=1, control=control){
   low_params <- c(-Inf,-Inf,-Inf,-Inf,-Inf,-Inf,-Inf,-Inf)
   high_params <- c(Inf,Inf,Inf,Inf,Inf,Inf,Inf,Inf)
   min_nll <- Inf
-  for(i in 1:nreps){
+  for(i in 1:n_reps){
     init_par <- rand_start(start_params,low_params,high_params,rand_pert)
     candidate <- optim(par=init_par, fn=negloglik_mod6, data=cmat, 
                        method="L-BFGS-B", lower=low_params, upper=high_params, 
@@ -400,7 +400,7 @@ fit_grt_models <- function(cmat, rand_pert=0, nreps=1, control=control){
   low_params <- c(-Inf,-Inf,-Inf,-Inf,-1,-Inf,-Inf)
   high_params <- c(Inf,Inf,Inf,Inf,1,Inf,Inf)
   min_nll <- Inf
-  for(i in 1:nreps){
+  for(i in 1:n_reps){
     init_par <- rand_start(start_params,low_params,high_params,rand_pert)
     candidate <- optim(par=init_par, fn=negloglik_mod7, data=cmat, 
                        method="L-BFGS-B", lower=low_params, upper=high_params, 
@@ -418,7 +418,7 @@ fit_grt_models <- function(cmat, rand_pert=0, nreps=1, control=control){
   low_params <- c(-Inf,-Inf,-1,-1,-1,-1,-Inf,-Inf)
   high_params <- c(Inf,Inf,1,1,1,1,Inf,Inf)
   min_nll <- Inf
-  for(i in 1:nreps){
+  for(i in 1:n_reps){
     init_par <- rand_start(start_params,low_params,high_params,rand_pert)
     candidate <- optim(par=init_par, fn=negloglik_mod8, data=cmat, 
                        method="L-BFGS-B", lower=low_params, upper=high_params, 
@@ -436,7 +436,7 @@ fit_grt_models <- function(cmat, rand_pert=0, nreps=1, control=control){
   low_params <- c(-Inf,-Inf,-Inf,-Inf,-1,-1,-1,-1,-Inf,-Inf)
   high_params <- c(Inf,Inf,Inf,Inf,1,1,1,1,Inf,Inf)
   min_nll <- Inf
-  for(i in 1:nreps){
+  for(i in 1:n_reps){
     init_par <- rand_start(start_params,low_params,high_params,rand_pert)
     candidate <- optim(par=init_par, fn=negloglik_mod9, data=cmat, 
                        method="L-BFGS-B", lower=low_params, upper=high_params, 
@@ -454,7 +454,7 @@ fit_grt_models <- function(cmat, rand_pert=0, nreps=1, control=control){
   low_params <- c(-Inf,-Inf,-Inf,-Inf,-Inf,-Inf,-1,-Inf,-Inf)
   high_params <- c(Inf,Inf,Inf,Inf,Inf,Inf,1,Inf,Inf)
   min_nll <- Inf
-  for(i in 1:nreps){
+  for(i in 1:n_reps){
     init_par <- rand_start(start_params,low_params,high_params,rand_pert)
     candidate <- optim(par=init_par, fn=negloglik_mod10, data=cmat, 
                        method="L-BFGS-B", lower=low_params, upper=high_params, 
@@ -472,7 +472,7 @@ fit_grt_models <- function(cmat, rand_pert=0, nreps=1, control=control){
   low_params <- c(-Inf,-Inf,-Inf,-Inf,-1,-1,-1,-1,-Inf,-Inf)
   high_params <- c(Inf,Inf,Inf,Inf,1,1,1,1,Inf,Inf)
   min_nll <- Inf
-  for(i in 1:nreps){
+  for(i in 1:n_reps){
     init_par <- rand_start(start_params,low_params,high_params,rand_pert)
     candidate <- optim(par=init_par, fn=negloglik_mod11, data=cmat, 
                        method="L-BFGS-B", lower=low_params, upper=high_params, 
@@ -490,7 +490,7 @@ fit_grt_models <- function(cmat, rand_pert=0, nreps=1, control=control){
   low_params <- c(-Inf,-Inf,-Inf,-Inf,-Inf,-Inf,-1,-1,-1,-1,-Inf,-Inf)
   high_params <- c(Inf,Inf,Inf,Inf,Inf,Inf,1,1,1,1,Inf,Inf) 
   min_nll <- Inf
-  for(i in 1:nreps){
+  for(i in 1:n_reps){
     init_par <- rand_start(start_params,low_params,high_params,rand_pert)
     candidate <- optim(par=init_par, fn=negloglik_mod12, data=cmat, 
                        method="L-BFGS-B", lower=low_params, upper=high_params, 
