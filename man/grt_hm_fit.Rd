@@ -2,12 +2,12 @@
 % Please edit documentation in R/grt_hm_fit.R
 \name{grt_hm_fit}
 \alias{grt_hm_fit}
-\title{Fit a hierarchy of traditional GRT models to data}
+\title{Fit a hierarchy of traditional GRT models to identification data}
 \usage{
-grt_hm_fit(data, rand_pert = 0.3, nreps = 5, control = list())
+grt_hm_fit(cmat, rand_pert = 0.3, nreps = 5, control = list())
 }
 \arguments{
-\item{data}{A 4x4 confusion matrix (see Details).}
+\item{cmat}{A 4x4 confusion matrix (see Details).}
 
 \item{rand_pert}{Maximum value of a random perturbation added to the starting
 parameters. Defaults to 0.3. With a value of zero, the optimization is started exactly at the
@@ -52,10 +52,10 @@ The data from a single participant in the experiment should be ordered in a
 responses. Each cell has the frequency of responses for the stimulus/response
 pair. Rows and columns should be ordered in the following way:
 
-\itemize{ \item{Stimulus/Row 1: A1B1} \item{Stimulus/Row 2: A2B1}
-\item{Stimulus/Row 3: A1B2} \item{Stimulus/Row 4: A2B2} \item{Response/Column
-1: a1b1} \item{Response/Column 2: a2b1} \item{Response/Column 3: a1b2}
-\item{Respones/Column 4: a2b2} }
+\itemize{ \item{Row 1: Stimulus A1B1} \item{Row 2: Stimulus A2B1}
+\item{Row 3: Stimulus A1B2} \item{Row 4: Stimulus A2B2} \item{Column
+1: Response a1b1} \item{Column 2: Response a2b1} \item{Column 3: Response a1b2}
+\item{Column 4: Response a2b2} }
 
 The default starting parameters for the optimization algorithm are the
 following: \itemize{ \item{Means:}{ A1B1=(0,0), A2B1=(1,0), A1B2=(1,0),
@@ -72,14 +72,14 @@ Note that a random value will be added to the default starting parameters if
 # Create a confusion matrix
 # Inside the c(...) below, we enter the data from row 1 in the
 matrix, then from row 2, etc.
-conf_matrix <- matrix(c(100,1,9,8,
+cmat <- matrix(c(100,1,9,8,
                        10,110,7,4,
                        31,3,80,10,
                        54,4,52,19),
                        nrow=4, ncol=4, byrow=TRUE)
 
 # Perform model fit and selection
-hm_fit_results <- grt_hm_fit(conf_matrix)
+hm_fit_results <- grt_hm_fit(cmat)
 
 # See a summary of the fitting and selection results
 summary(hm_fit_results)

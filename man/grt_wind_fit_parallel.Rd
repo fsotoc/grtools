@@ -9,9 +9,6 @@ grt_wind_fit_parallel(data, start_params = c(), rand_start = F,
   n_cores = 0)
 }
 \arguments{
-\item{data}{List of confusion matrices. Each entry in the list should contain
-the 4x4 confusion matrix from one individual (see Details).}
-
 \item{start_params}{An optional vector of parameters to start the
 optimization algorithm. You can provide either the group parameters or both
 group and individual parameters. It will be created automatically if not

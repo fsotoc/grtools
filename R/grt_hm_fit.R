@@ -1,11 +1,11 @@
 
-#' Fit a hierarchy of traditional GRT models to data
+#' Fit a hierarchy of traditional GRT models to identification data
 #' 
 #' Fits a hierarchy of traditional GRT models to data from a 2x2 identification 
 #' experiment, using the BFGS optimization method (See Ashby & Soto, 2015). It
 #' then selects the best-fitting model using the AIC. 
 #' 
-#' @param data A 4x4 confusion matrix (see Details).
+#' @param cmat A 4x4 confusion matrix (see Details).
 #' @param rand_pert Maximum value of a random perturbation added to the starting
 #'   parameters. Defaults to 0.3. With a value of zero, the optimization is started exactly at the 
 #'   default starting parameters (see Details). As the value of rand_pert is 
@@ -40,10 +40,10 @@
 #' responses. Each cell has the frequency of responses for the stimulus/response
 #' pair. Rows and columns should be ordered in the following way:
 #' 
-#' \itemize{ \item{Stimulus/Row 1: A1B1} \item{Stimulus/Row 2: A2B1} 
-#' \item{Stimulus/Row 3: A1B2} \item{Stimulus/Row 4: A2B2} \item{Response/Column
-#' 1: a1b1} \item{Response/Column 2: a2b1} \item{Response/Column 3: a1b2} 
-#' \item{Respones/Column 4: a2b2} }
+#' \itemize{ \item{Row 1: Stimulus A1B1} \item{Row 2: Stimulus A2B1} 
+#' \item{Row 3: Stimulus A1B2} \item{Row 4: Stimulus A2B2} \item{Column
+#' 1: Response a1b1} \item{Column 2: Response a2b1} \item{Column 3: Response a1b2} 
+#' \item{Column 4: Response a2b2} }
 #' 
 #' The default starting parameters for the optimization algorithm are the
 #' following: \itemize{ \item{Means:}{ A1B1=(0,0), A2B1=(1,0), A1B2=(1,0),
@@ -65,14 +65,14 @@
 #' # Create a confusion matrix
 #' # Inside the c(...) below, we enter the data from row 1 in the 
 #' matrix, then from row 2, etc.
-#' conf_matrix <- matrix(c(100,1,9,8,
+#' cmat <- matrix(c(100,1,9,8,
 #'                        10,110,7,4,
 #'                        31,3,80,10,
 #'                        54,4,52,19),
 #'                        nrow=4, ncol=4, byrow=TRUE)
 #' 
 #' # Perform model fit and selection
-#' hm_fit_results <- grt_hm_fit(conf_matrix)
+#' hm_fit_results <- grt_hm_fit(cmat)
 #' 
 #' # See a summary of the fitting and selection results
 #' summary(hm_fit_results)
@@ -82,10 +82,10 @@
 #' 
 #' @export
 #' 
-grt_hm_fit <- function(data, rand_pert=0.3, nreps=5, control=list()){
+grt_hm_fit <- function(cmat, rand_pert=0.3, nreps=5, control=list()){
   
   # fit all models 
-  fitted_models <- fit_grt_models(data, rand_pert=rand_pert, nreps=nreps, control=control)
+  fitted_models <- fit_grt_models(cmat, rand_pert=rand_pert, nreps=nreps, control=control)
   
   # order all models according to AIC
   o_aic <- order_aic(fitted_models)
@@ -265,7 +265,7 @@ grt_hm_fit <- function(data, rand_pert=0.3, nreps=5, control=list()){
   best_model$predicted <- as.vector(matrix_predict(
     best_model$means, best_model$covmat, diag(2), 
     matrix(c(best_model$a1, best_model$a2), 2, 1)) )
-  best_model$observed <- as.vector(pmatrix(data))
+  best_model$observed <- as.vector(pmatrix(cmat))
   
   # return object of class grt_hm_fit
   results <- list(table=o_aic, best_model=best_model)
@@ -277,7 +277,7 @@ grt_hm_fit <- function(data, rand_pert=0.3, nreps=5, control=list()){
 # Function that actually performs maximum-likelihood estimation
 # for all models:
 
-fit_grt_models <- function(data, rand_pert=0, nreps=1, control=control){     
+fit_grt_models <- function(cmat, rand_pert=0, nreps=1, control=control){     
   
   # if ndeps was not selected by the user, assign a default value
   if (is.null(control[["ndeps"]])) {
@@ -294,7 +294,7 @@ fit_grt_models <- function(data, rand_pert=0, nreps=1, control=control){
   min_nll <- Inf
   for(i in 1:nreps) {
     init_par <- rand_start(start_params, low_params, high_params, rand_pert)
-    candidate <- optim(par=init_par, fn=negloglik_mod1, data=data, 
+    candidate <- optim(par=init_par, fn=negloglik_mod1, data=cmat, 
                        method="L-BFGS-B", lower=low_params, upper=high_params, 
                        control=ctrl)
     if(candidate$value < min_nll) {
@@ -312,7 +312,7 @@ fit_grt_models <- function(data, rand_pert=0, nreps=1, control=control){
   min_nll <- Inf
   for(i in 1:nreps){
     init_par <- rand_start(start_params,low_params,high_params,rand_pert)
-    candidate <- optim(par=init_par, fn=negloglik_mod2, data=data, 
+    candidate <- optim(par=init_par, fn=negloglik_mod2, data=cmat, 
                        method="L-BFGS-B", lower=low_params, upper=high_params, 
                        control=ctrl)
     if(candidate$value < min_nll) {
@@ -330,7 +330,7 @@ fit_grt_models <- function(data, rand_pert=0, nreps=1, control=control){
   min_nll <- Inf
   for(i in 1:nreps){
     init_par <- rand_start(start_params,low_params,high_params,rand_pert)
-    candidate <- optim(par=init_par, fn=negloglik_mod3, data=data, 
+    candidate <- optim(par=init_par, fn=negloglik_mod3, data=cmat, 
                        method="L-BFGS-B", lower=low_params, upper=high_params, 
                        control=ctrl)
     if(candidate$value < min_nll) {
@@ -348,7 +348,7 @@ fit_grt_models <- function(data, rand_pert=0, nreps=1, control=control){
   min_nll <- Inf
   for(i in 1:nreps){
     init_par <- rand_start(start_params,low_params,high_params,rand_pert)
-    candidate <- optim(par=init_par, fn=negloglik_mod4, data=data, 
+    candidate <- optim(par=init_par, fn=negloglik_mod4, data=cmat, 
                        method="L-BFGS-B", lower=low_params, upper=high_params, 
                        control=ctrl)
     if(candidate$value < min_nll) {
@@ -366,7 +366,7 @@ fit_grt_models <- function(data, rand_pert=0, nreps=1, control=control){
   min_nll <- Inf
   for(i in 1:nreps){
     init_par <- rand_start(start_params,low_params,high_params,rand_pert)
-    candidate <- optim(par=init_par, fn=negloglik_mod5, data=data, 
+    candidate <- optim(par=init_par, fn=negloglik_mod5, data=cmat, 
                        method="L-BFGS-B", lower=low_params, upper=high_params, 
                        control=ctrl)
     if(candidate$value < min_nll) {
@@ -384,7 +384,7 @@ fit_grt_models <- function(data, rand_pert=0, nreps=1, control=control){
   min_nll <- Inf
   for(i in 1:nreps){
     init_par <- rand_start(start_params,low_params,high_params,rand_pert)
-    candidate <- optim(par=init_par, fn=negloglik_mod6, data=data, 
+    candidate <- optim(par=init_par, fn=negloglik_mod6, data=cmat, 
                        method="L-BFGS-B", lower=low_params, upper=high_params, 
                        control=ctrl)
     if(candidate$value < min_nll) {
@@ -402,7 +402,7 @@ fit_grt_models <- function(data, rand_pert=0, nreps=1, control=control){
   min_nll <- Inf
   for(i in 1:nreps){
     init_par <- rand_start(start_params,low_params,high_params,rand_pert)
-    candidate <- optim(par=init_par, fn=negloglik_mod7, data=data, 
+    candidate <- optim(par=init_par, fn=negloglik_mod7, data=cmat, 
                        method="L-BFGS-B", lower=low_params, upper=high_params, 
                        control=ctrl)
     if(candidate$value < min_nll) {
@@ -420,7 +420,7 @@ fit_grt_models <- function(data, rand_pert=0, nreps=1, control=control){
   min_nll <- Inf
   for(i in 1:nreps){
     init_par <- rand_start(start_params,low_params,high_params,rand_pert)
-    candidate <- optim(par=init_par, fn=negloglik_mod8, data=data, 
+    candidate <- optim(par=init_par, fn=negloglik_mod8, data=cmat, 
                        method="L-BFGS-B", lower=low_params, upper=high_params, 
                        control=ctrl)
     if(candidate$value < min_nll) {
@@ -438,7 +438,7 @@ fit_grt_models <- function(data, rand_pert=0, nreps=1, control=control){
   min_nll <- Inf
   for(i in 1:nreps){
     init_par <- rand_start(start_params,low_params,high_params,rand_pert)
-    candidate <- optim(par=init_par, fn=negloglik_mod9, data=data, 
+    candidate <- optim(par=init_par, fn=negloglik_mod9, data=cmat, 
                        method="L-BFGS-B", lower=low_params, upper=high_params, 
                        control=ctrl)
     if(candidate$value < min_nll) {
@@ -456,7 +456,7 @@ fit_grt_models <- function(data, rand_pert=0, nreps=1, control=control){
   min_nll <- Inf
   for(i in 1:nreps){
     init_par <- rand_start(start_params,low_params,high_params,rand_pert)
-    candidate <- optim(par=init_par, fn=negloglik_mod10, data=data, 
+    candidate <- optim(par=init_par, fn=negloglik_mod10, data=cmat, 
                        method="L-BFGS-B", lower=low_params, upper=high_params, 
                        control=ctrl)
     if(candidate$value < min_nll) {
@@ -474,7 +474,7 @@ fit_grt_models <- function(data, rand_pert=0, nreps=1, control=control){
   min_nll <- Inf
   for(i in 1:nreps){
     init_par <- rand_start(start_params,low_params,high_params,rand_pert)
-    candidate <- optim(par=init_par, fn=negloglik_mod11, data=data, 
+    candidate <- optim(par=init_par, fn=negloglik_mod11, data=cmat, 
                        method="L-BFGS-B", lower=low_params, upper=high_params, 
                        control=ctrl)
     if(candidate$value < min_nll) {
@@ -492,7 +492,7 @@ fit_grt_models <- function(data, rand_pert=0, nreps=1, control=control){
   min_nll <- Inf
   for(i in 1:nreps){
     init_par <- rand_start(start_params,low_params,high_params,rand_pert)
-    candidate <- optim(par=init_par, fn=negloglik_mod12, data=data, 
+    candidate <- optim(par=init_par, fn=negloglik_mod12, data=cmat, 
                        method="L-BFGS-B", lower=low_params, upper=high_params, 
                        control=ctrl)
     if(candidate$value < min_nll) {

@@ -2,13 +2,13 @@
 % Please edit documentation in R/grt_wind_fit.R
 \name{grt_wind_fit}
 \alias{grt_wind_fit}
-\title{Fit a GRT-wIND model to data}
+\title{Fit a GRT-wIND model to identification data}
 \usage{
-grt_wind_fit(data, start_params = c(), rand_pert = 0.3,
+grt_wind_fit(cmats, start_params = c(), rand_pert = 0.3,
   control = list(maxit = 1000, factr = 1e+10))
 }
 \arguments{
-\item{data}{List of confusion matrices. Each entry in the list should contain
+\item{cmats}{List of confusion matrices. Each entry in the list should contain
 the 4x4 confusion matrix from one individual (see Details).}
 
 \item{start_params}{An optional vector of parameters to start the
@@ -52,18 +52,12 @@ The data from a single participant in the experiment should be ordered in a
 responses. Each cell has the frequency of responses for the stimulus/response
 pair. Rows and columns should be ordered in the following way:
 
-\itemize{
-\item{Stimulus/Row 1: A1B1}
-\item{Stimulus/Row 2: A2B1}
-\item{Stimulus/Row 3: A1B2}
-\item{Stimulus/Row 4: A2B2}
-\item{Response/Column 1: a1b1}
-\item{Response/Column 2: a2b1}
-\item{Response/Column 3: a1b2}
-\item{Respones/Column 4: a2b2}
-}
+\itemize{ \item{Row 1: Stimulus A1B1} \item{Row 2: Stimulus A2B1}
+\item{Row 3: Stimulus A1B2} \item{Row 4: Stimulus A2B2} \item{Column
+1: Response a1b1} \item{Column 2: Response a2b1} \item{Column 3: Response a1b2}
+\item{Column 4: Response a2b2} }
 
-The argument \code{data} is a list with all individual confusion matrices
+The argument \code{cmats} is a list with all individual confusion matrices
 from an experimental group.
 
 If the value of \code{start_params} is not provided, the starting parameters
@@ -84,20 +78,20 @@ Note that a random value will be added to these parameters if
 # Create list with confusion matrices # In this example, we enter data from
 # an experiment with 5 participants. For each participant, inside the c(...),
 # enter the data from row 1 in the matrix, then from row 2, etc.
-data <- list(matrix(c(100,1,9,8,10,110,7,4,31,3,80,10,54,4,52,19),nrow=4,ncol=4,byrow=TRUE))
-data[[2]] <- matrix(c(122,7,0,1,1,102,1,5,3,2,111,9),nrow=4,ncol=4,byrow=TRUE)
-data[[3]] <- matrix(c(107,0,5,0,0,101,1,4,3,1,113,2,0,3,1,108),nrow=4,ncol=4,byrow=TRUE)
-data[[4]] <- matrix(c(122,1,0,0,1,120,0,0,0,0,118,6,0,1,6,118),nrow=4,ncol=4,byrow=TRUE)
-data[[5]] <- matrix(c(89,17,6,4,4,81,8,6,14,7,86,1,11,25,17,26),nrow=4,ncol=4,byrow=TRUE)
+cmats <- list(matrix(c(100,1,9,8,10,110,7,4,31,3,80,10,54,4,52,19),nrow=4,ncol=4,byrow=TRUE))
+cmats[[2]] <- matrix(c(122,7,0,1,1,102,1,5,3,2,111,9),nrow=4,ncol=4,byrow=TRUE)
+cmats[[3]] <- matrix(c(107,0,5,0,0,101,1,4,3,1,113,2,0,3,1,108),nrow=4,ncol=4,byrow=TRUE)
+cmats[[4]] <- matrix(c(122,1,0,0,1,120,0,0,0,0,118,6,0,1,6,118),nrow=4,ncol=4,byrow=TRUE)
+cmats[[5]] <- matrix(c(89,17,6,4,4,81,8,6,14,7,86,1,11,25,17,26),nrow=4,ncol=4,byrow=TRUE)
 
 # fit the model to data
-fitted_model <- grt_wind_fit(data)
+fitted_model <- grt_wind_fit(cmats)
 
 # plot a graphical representation of the fitted model
 plot(fitted_model)
 
 # optionally, you can run a Wald test of separability and independence
-fitted_model <- wald(fitted_model, data)
+fitted_model <- wald(fitted_model, cmats)
 
 # print a summary of the fitted model and tests to screen
 summary(fitted_model)

@@ -3,7 +3,7 @@ summary.sumstats_garner <- function(ssg_list){
   
   # summary
   sep <- c("NO", "NO")
-  sep[ssg_list$garner_interference$gi_effect=="NO"] <- "yes?"
+  sep[ssg_list$garner_interference$GI_effect=="NO"] <- "yes?"
   sep <- c(sep, "NO", "NO")
   if (all(ssg_list$marginal_response_invariance$Pass=="YES")){
     sep[3] <- "yes?"
