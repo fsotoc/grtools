@@ -5,7 +5,7 @@
 
 1. Model-based analyses of separability and independence with GRT-wIND (Soto et al., 2015) for the 2x2 identification experiment.
 2. Model-based analyses of separability and independence with traditional GRT models for the 2x2 identification experiment (Ashby & Soto, 2015).
-3. Summary statistics analysis (i.e. Kadlec's MDSDA; see Kadlec & Townsend, 1992) for the 2x2 identification experiment.
+3. Summary statistics analysis (i.e. Kadlec's MSDA; see Kadlec & Townsend, 1992) for the 2x2 identification experiment.
 4. Summary statistics analysis for the 2x2 Garner filtering task (Ashby & Maddox, 1994).
 
 The easiest way to instal **grtools** and its dependencies is using devtools. In the R console, type:
