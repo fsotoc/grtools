@@ -20,13 +20,13 @@
 #' face perception. \emph{Psychonomic Bulletin & Review, 22}(1), 88-111.
 #' 
 #' @export
-grt_wind_fit_parallel <- function(data, start_params=c(), rand_start=F, rand_pert=0.3,
+grt_wind_fit_parallel <- function(cmats, start_params=c(), rand_pert=0.3,
                             control=list(maxit=1000, factr=1e+10),
                             n_reps, n_cores=0) {
   
   
   # Calculate the number of available cores
-  available_cores <- detectCores()
+  available_cores <- parallel::detectCores()
   
   # if the number of cores was not provided or the user asked for more
   # cores than the available number, then use available minus one
@@ -40,21 +40,20 @@ grt_wind_fit_parallel <- function(data, start_params=c(), rand_start=F, rand_per
   }
   
   # Initiate cluster and load package in the workers
-  cl <- makeCluster(n_cores)
-  clusterEvalQ(cl, library(grtools))
+  cl <- parallel::makeCluster(n_cores)
+  parallel::clusterEvalQ(cl, library(grtools))
   
   # Create a list with repetitions of the data
-  rep_data <- rep(list(data), n_reps)
+  rep_cmats <- rep(list(cmats), n_reps)
   
   # run in parallel
-  results <- parLapply(cl, rep_data, grt_wind_fit, 
-                       start_params=start_params, 
-                       rand_start=rand_start, 
-                       rand_pert=rand_pert,
-                       control=control)
+  results <- parallel::parLapply(cl, rep_cmats, grt_wind_fit, 
+                                 start_params=start_params,
+                                 rand_pert=rand_pert,
+                                 control=control)
   
   # stop the cluster
-  stopCluster(cl)
+  parallel::stopCluster(cl)
   
   # get the best-fitting model
   nlls <- c()

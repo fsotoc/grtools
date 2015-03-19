@@ -26,7 +26,7 @@ License: \tab GPL (>= 2)\cr
 
 4. Summary statistic analysis for the 2x2 Garner filtering task (Ashby & Maddox, 1994). See \code{\link{sumstats_garner}}
 }
-}
+
 \author{
 Fabian Soto, Emily Zheng
 
@@ -42,10 +42,10 @@ Kadlec, H., & Townsend, J. T. (1992). Signal detection analyses of multidimensio
 Soto, F. A., Musgrave, R., Vucovich, L., & Ashby, F. G. (2015). General recognition theory with individual differences: A new method for examining perceptual and decisional interactions with an application to face perception. \emph{Psychonomic Bulletin & Review, 22}(1), 88-111.
   
 }
-~~ Optionally other standard keywords, one per line, from file KEYWORDS in the R ~~
-~~ documentation directory ~~
+
 \keyword{ package, general recognition theory, grt, mdsdt, signal detection theory, 
 perceptual separability, perceptual independence, separability }
 \seealso{
 For applications of General Recognition Theory to perceptual categorization experiments, see \code{\href{http://cran.r-project.org/web/packages/grt/index.html}{grt}
+}
 }

@@ -4,11 +4,13 @@
 \alias{grt_wind_fit_parallel}
 \title{Fit a GRT-wIND model to data several times in parallel}
 \usage{
-grt_wind_fit_parallel(data, start_params = c(), rand_start = F,
-  rand_pert = 0.3, control = list(maxit = 1000, factr = 1e+10), n_reps,
-  n_cores = 0)
+grt_wind_fit_parallel(cmats, start_params = c(), rand_pert = 0.3,
+  control = list(maxit = 1000, factr = 1e+10), n_reps, n_cores = 0)
 }
 \arguments{
+\item{cmats}{List of confusion matrices. Each entry in the list should contain
+the 4x4 confusion matrix from one individual (see Details).}
+
 \item{start_params}{An optional vector of parameters to start the
 optimization algorithm. You can provide either the group parameters or both
 group and individual parameters. It will be created automatically if not

@@ -29,6 +29,16 @@
 #' representation of the fitted model.
 #' 
 #' @details 
+#' We recommend that you fit GRT-wIND to your data repeated times, each time 
+#' with a different value for the starting parameters, and keep the solution
+#' with the smallest negative log-likelihood. This facilitates finding the true 
+#' maximum likelihood estimates of the model's parameters, which is necessary to
+#' make valid conclusions about dimensional separability and independence. The 
+#' function \code{\link{grt_wind_fit_parallel}} does exactly this, taking 
+#' advantage of multiple CPUs in your computer to speed up the process. For most
+#' applications, you should use \code{\link{grt_wind_fit_parallel}} instead of
+#' the current function.
+#' 
 #' A 2x2 identification experiment involves two dimensions, A and B, each with
 #' two levels, 1 and 2. Stimuli are represented by their level in each dimension
 #' (A1B1, A1B2, A2B1, and A2B2) and so are their corresponding correct
@@ -71,7 +81,7 @@
 #' # an experiment with 5 participants. For each participant, inside the c(...),
 #' # enter the data from row 1 in the matrix, then from row 2, etc.
 #' cmats <- list(matrix(c(100,1,9,8,10,110,7,4,31,3,80,10,54,4,52,19),nrow=4,ncol=4,byrow=TRUE))
-#' cmats[[2]] <- matrix(c(122,7,0,1,1,102,1,5,3,2,111,9),nrow=4,ncol=4,byrow=TRUE)
+#' cmats[[2]] <- matrix(c(122,7,0,1,1,102,1,5,3,2,111,9,11,7,11,106),nrow=4,ncol=4,byrow=TRUE)
 #' cmats[[3]] <- matrix(c(107,0,5,0,0,101,1,4,3,1,113,2,0,3,1,108),nrow=4,ncol=4,byrow=TRUE)
 #' cmats[[4]] <- matrix(c(122,1,0,0,1,120,0,0,0,0,118,6,0,1,6,118),nrow=4,ncol=4,byrow=TRUE)
 #' cmats[[5]] <- matrix(c(89,17,6,4,4,81,8,6,14,7,86,1,11,25,17,26),nrow=4,ncol=4,byrow=TRUE)

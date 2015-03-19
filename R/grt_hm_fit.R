@@ -13,7 +13,7 @@
 #' @param n_reps Number of times the optimization algorithm should be run, each time
 #' with a different value for the starting parameters. The function will return the
 #' model with a highest log-likelihood from all the runs. The value of \code{n_reps}
-#' defaults to five.
+#' defaults to ten.
 #' @param control A list of optional control parameters for the \code{optim} function. See 
 #'   \code{\link[stats]{optim}}. Note that the parameter \code{ndeps} entered 
 #'   here should be a single number instead of the vector that is usually passed 
@@ -65,11 +65,11 @@
 #' # Create a confusion matrix
 #' # Inside the c(...) below, we enter the data from row 1 in the 
 #' # matrix, then from row 2, etc.
-#' cmat <- matrix(c(100,1,9,8,
-#'                        10,110,7,4,
-#'                        31,3,80,10,
-#'                        54,4,52,19),
-#'                        nrow=4, ncol=4, byrow=TRUE)
+#' cmat <- matrix(c(140, 36, 34, 40,
+#'                  89, 91, 4, 66,
+#'                  85, 5, 90, 70,
+#'                  20, 59, 8, 163),
+#'                  nrow=4, ncol=4, byrow=TRUE)
 #' 
 #' # Perform model fit and selection
 #' hm_fit_results <- grt_hm_fit(cmat)
@@ -82,7 +82,7 @@
 #' 
 #' @export
 #' 
-grt_hm_fit <- function(cmat, rand_pert=0.3, n_reps=5, control=list()){
+grt_hm_fit <- function(cmat, rand_pert=0.3, n_reps=10, control=list()){
   
   # fit all models 
   fitted_models <- fit_grt_models(cmat, rand_pert=rand_pert, n_reps=n_reps, control=control)

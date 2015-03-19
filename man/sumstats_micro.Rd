@@ -49,11 +49,11 @@ pair. Rows and columns should be ordered in the following way:
 # Create a confusion matrix
 # Inside the c(...) below, we enter the data from row 1 in the
 # matrix, then from row 2, etc.
-cmat <- matrix(c(100,1,9,8,
-                       10,110,7,4,
-                       31,3,80,10,
-                       54,4,52,19),
-                       nrow=4, ncol=4, byrow=TRUE)
+cmat <- matrix(c(140, 36, 34, 40,
+                 89, 91, 4, 66,
+                 85, 5, 90, 70,
+                 20, 59, 8, 163),
+                 nrow=4, ncol=4, byrow=TRUE)
 
 # Perform the summary statistics microanalysis
 micro_results <- sumstats_micro(cmat)
