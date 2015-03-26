@@ -15,7 +15,7 @@
 Of course, you will need R, which you can download [here](http://cran.rstudio.com/). It is also a good idea to install RStudio, which you can download [here](http://www.rstudio.com/products/rstudio/download/).
 
 ## 1. Installing pre-requisites
-**grtools** requires [Rcpp](http://cran.r-project.org/web/packages/Rcpp/index.html) to work, which in turns requires a development environment with a suitable compiler. If you already have this, go to step 2.
+**grtools** requires [Rcpp](http://cran.r-project.org/web/packages/Rcpp/index.html) to work, which in turn requires a development environment with a suitable compiler. If you already have this, go to step 2.
 
 If you do not have a C++ compiler installed, see the [Rcpp FAQ](http://cran.r-project.org/web/packages/Rcpp/vignettes/Rcpp-FAQ.pdf), particularly points 1.2 and 1.3. More detailed instructions on how to install the compiler can be found [here](https://github.com/stan-dev/rstan/wiki/RStan-Mac-OS-X-Prerequisite-Installation-Instructions) for Mac OS X (this page belongs to a different project that uses the same pre-requisites as grtools; please ignore instructions to install RStan), and [here](https://github.com/stan-dev/rstan/wiki/Install-Rtools-for-Windows) for Windows.
 
@@ -28,14 +28,14 @@ install.packages("devtools")
 devtools::install_github("fsotoc/grtools", dependencies="Imports")
 ```
 
-After installation. Type the following in the R console:
+After installation, type the following in the R console:
 
 ```R
 library(grtools)
 ?grtools
 ```
 
-This will open a document that includes links to help documentation for each of the main analyses included in **grtools** (including examples).
+This will open a document that includes links to help documentation for each of the main analyses included in **grtools** (including examples). Sometimes the command ```?grtools``` produces an error instead of displaying the documentation. Simply quitting and re-opening R typically solves this problem.
 
 
 References
