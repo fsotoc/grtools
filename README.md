@@ -12,7 +12,7 @@
 
 # Installation
 
-Of course, you will need R, which you can download [here](http://cran.rstudio.com/). It is also a good idea to install RStudio, which you can download [here](http://www.rstudio.com/products/rstudio/download/).
+Of course, you will need R (64-bit version), which you can download [here](http://cran.rstudio.com/). It is also a good idea to install RStudio, which you can download [here](http://www.rstudio.com/products/rstudio/download/).
 
 ## 1. Installing pre-requisites
 **grtools** requires [Rcpp](http://cran.r-project.org/web/packages/Rcpp/index.html) to work, which in turn requires a development environment with a suitable compiler. If you already have this, go to step 2.
