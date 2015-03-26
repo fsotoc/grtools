@@ -12,6 +12,8 @@
 
 # Installation
 
+Of course, you will need R, which you can download [here](http://cran.rstudio.com/). It is also a good idea to install RStudio, which you can download [here](http://www.rstudio.com/products/rstudio/download/).
+
 ## 1. Installing pre-requisites
 **grtools** requires [Rcpp](http://cran.r-project.org/web/packages/Rcpp/index.html) to work, which in turns requires a development environment with a suitable compiler. If you already have this, go to step 2.
 
@@ -19,7 +21,7 @@ If you do not have a C++ compiler installed, see the [Rcpp FAQ](http://cran.r-pr
 
 
 ## 2. Installing grtools
-The easiest way to instal **grtools** and its dependencies is using devtools. In the R console, type:
+The easiest way to install **grtools** and its dependencies is using devtools. Open RStudio or R, and in the console type:
 
 ```R
 install.packages("devtools")
