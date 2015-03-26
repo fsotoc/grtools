@@ -12,8 +12,7 @@
 
 \item{labels}{Optional names for the labels of dimensions A and B}
 
-\item{ellipse_width}{Parameter controlling the width of the drawn ellipses
-#'}
+\item{ellipse_width}{Parameter controlling the width of the drawn ellipses}
 }
 \description{
 Plot the object returned by \code{\link{grt_hm_fit}}

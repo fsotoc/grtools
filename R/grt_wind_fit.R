@@ -11,9 +11,9 @@
 #'   provided (see Details).
 #' @param rand_pert Maximum value of a random perturbation added to the starting
 #'   parameters. With a value of zero, the algorithm is started exactly at
-#'   start_params. As the value of rand_pert is increase, the starting
+#'   \code{start_params}. As the value of \code{rand_pert} is increased, the starting
 #'   parameters become closer to be "truly random."
-#' @param control A list of control parameters for the optim function. See
+#' @param control A list of control parameters for the \code{optim} function. See
 #'   \code{\link[stats]{optim}}.
 #' 
 #' @return An object of class "\code{grt_wind_fit}."
