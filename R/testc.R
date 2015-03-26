@@ -1,4 +1,4 @@
-ctest <- function(h1, fa1, h2, fa2, n1_n, n1_s, n2_n, n2_s) {
+testc <- function(h1, fa1, h2, fa2, n1_n, n1_s, n2_n, n2_s) {
   
   # compute c1 and c2
   c1 <- (qnorm(h1) + qnorm(fa1)) / 2
