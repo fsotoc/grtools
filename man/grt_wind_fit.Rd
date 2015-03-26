@@ -18,10 +18,10 @@ provided (see Details).}
 
 \item{rand_pert}{Maximum value of a random perturbation added to the starting
 parameters. With a value of zero, the algorithm is started exactly at
-start_params. As the value of rand_pert is increase, the starting
+\code{start_params}. As the value of \code{rand_pert} is increased, the starting
 parameters become closer to be "truly random."}
 
-\item{control}{A list of control parameters for the optim function. See
+\item{control}{A list of control parameters for the \code{optim} function. See
   \code{\link[stats]{optim}}.}
 }
 \value{

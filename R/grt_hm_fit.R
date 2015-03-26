@@ -8,7 +8,7 @@
 #' @param cmat A 4x4 confusion matrix (see Details).
 #' @param rand_pert Maximum value of a random perturbation added to the starting
 #'   parameters. Defaults to 0.3. With a value of zero, the optimization is started exactly at the 
-#'   default starting parameters (see Details). As the value of rand_pert is 
+#'   default starting parameters (see Details). As the value of \code{rand_pert} is 
 #'   increased, the starting parameters become closer to be "truly random."
 #' @param n_reps Number of times the optimization algorithm should be run, each time
 #' with a different value for the starting parameters. The function will return the
