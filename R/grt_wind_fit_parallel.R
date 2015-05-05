@@ -21,7 +21,7 @@
 #' 
 #' @export
 grt_wind_fit_parallel <- function(cmats, start_params=c(), rand_pert=0.3,
-                            control=list(maxit=1000, factr=1e+10),
+                            control=list(),
                             n_reps, n_cores=0) {
   
   

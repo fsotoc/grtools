@@ -103,7 +103,7 @@
 #' fitted_model$indpar
 #' 
 #' @export
-grt_wind_fit <- function(cmats, start_params=c(), rand_pert=0.3, control=list(maxit=1000, factr=1e+10)) {  
+grt_wind_fit <- function(cmats, start_params=c(), rand_pert=0.3, control=list()) {  
   
   # get number of subjects
   N = length(cmats)
@@ -180,6 +180,19 @@ grt_wind_fit <- function(cmats, start_params=c(), rand_pert=0.3, control=list(ma
   
   
   #--------------------------------------------------------
+  # set up default control parameters for optimization
+  # these values have yielded the highest likelihood in problems
+  # using real data, but this might be specific to each data set
+  if ( !("maxit" %in% names(control)) ){
+    control$maxit <- 1e+5
+  }
+  if ( !("ndeps" %in% names(control)) ){
+    control$ndeps <- rep(1e-2, times=length(start_params))
+  }
+  if ( !("factr" %in% names(control)) ){
+    control$factr <- 1e-5
+  }
+  
   # find maximum likelihood estimates
   results <- optim(start_params, grt_wind_nll, data=cmats, method='L-BFGS-B', lower=low_params, upper=up_params, control=control, hessian = F)
   

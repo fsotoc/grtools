@@ -58,7 +58,10 @@ wald.grt_wind_fit <- function(fitted_model, data, estimate_hess=T){
   
   # get hessian
   if (estimate_hess==T){
-    H <- numDeriv::hessian(func=grt_wind_nll, x=fitted_model$par, data=data)
+    #H <- numDeriv::hessian(func=grt_wind_nll, x=fitted_model$par, data=data)
+    H <- optimHess(par=fitted_model$par, fn=grt_wind_nll, data=data,
+                   control=list(ndeps=rep(1e-2, times=length(fitted_model$par))))
+    #H <- maxLik::numericNHessian(f=grt_wind_nll, t0=fitted_model$par, data=data, eps=1e-3)
   } else {
     H <- fitted_model$hessian
   }
