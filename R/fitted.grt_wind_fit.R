@@ -1,7 +1,9 @@
 #' @export
-fitted.grt_wind_fit <- function(model){
-  # input (model) is a list obtained from GRTwIND.fit
-  # returns a vector of predicted response probabilities
+fitted.grt_wind_fit <- function(model, out_format="vector"){
+  # input (model) is a list obtained from grt_wind_fit
+  # out_format determines the format of the output; "vector" returns
+  # a vector of predicted response probabilities; "list" returns
+  # a list of confusion probability matrices (one per participant)
   
    N <- model$N
    predicted <- c()
@@ -41,8 +43,11 @@ fitted.grt_wind_fit <- function(model){
                   2,2,byrow=TRUE)
      c <- matrix(c(model$par[16+(sub-1)*6+4], model$par[16+(sub-1)*6+6]),2,1)
      
-     predicted <- c(predicted, as.vector(matrix_predict(means,covmat,b,c)))
-     
+     if (out_format=="vector"){
+       predicted <- c(predicted, as.vector(matrix_predict(means,covmat,b,c)))
+     } else if (out_format=="list"){
+       predicted <- c(predicted, list(matrix_predict(means,covmat,b,c)))
+     }
    }
 
    return(predicted)
