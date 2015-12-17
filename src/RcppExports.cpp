@@ -9,18 +9,14 @@ using namespace Rcpp;
 double matrixloglikC(NumericMatrix data, NumericMatrix means, List covmat, NumericMatrix b, NumericMatrix c);
 RcppExport SEXP grtools_matrixloglikC(SEXP dataSEXP, SEXP meansSEXP, SEXP covmatSEXP, SEXP bSEXP, SEXP cSEXP) {
 BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< NumericMatrix >::type data(dataSEXP );
-        Rcpp::traits::input_parameter< NumericMatrix >::type means(meansSEXP );
-        Rcpp::traits::input_parameter< List >::type covmat(covmatSEXP );
-        Rcpp::traits::input_parameter< NumericMatrix >::type b(bSEXP );
-        Rcpp::traits::input_parameter< NumericMatrix >::type c(cSEXP );
-        double __result = matrixloglikC(data, means, covmat, b, c);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< NumericMatrix >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type means(meansSEXP);
+    Rcpp::traits::input_parameter< List >::type covmat(covmatSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type b(bSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type c(cSEXP);
+    __result = Rcpp::wrap(matrixloglikC(data, means, covmat, b, c));
+    return __result;
 END_RCPP
 }

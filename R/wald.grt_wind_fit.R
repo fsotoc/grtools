@@ -52,138 +52,141 @@ wald <- function(x, ...) UseMethod("wald")
 #' @export
 wald.grt_wind_fit <- function(fitted_model, data, estimate_hess=T){
   
-  # get number of subjects N and parameters K
-  N <- length(data)
-  K <- length(fitted_model$par)
-  
-  # get hessian
-  if (estimate_hess==T){
-    #H <- numDeriv::hessian(func=grt_wind_nll, x=fitted_model$par, data=data)
-    H <- optimHess(par=fitted_model$par, fn=grt_wind_nll, data=data,
-                   control=list(ndeps=rep(1e-2, times=length(fitted_model$par))))
-    #H <- maxLik::numericNHessian(f=grt_wind_nll, t0=fitted_model$par, data=data, eps=1e-3)
-  } else {
-    H <- fitted_model$hessian
-  }
-  
-  # estimate covariance matrix by inverting the Hessian
-  S <- solve(H)
-  if (any(is.infinite(S))){
-    S <- MASS::ginv(H)          # if inversion failed, get P-M pseudoinverse (requires package MASS)
-  }
-  
-  #----------------------------------------------
-  # global test for PS of dimension A from dimension B
-  R <- matrix(0, nrow=4, ncol=K)
-  R[1,3] <- 1
-  R[2,11] <- 1
-  R[3,1] <- 1
-  R[3,5] <- -1
-  R[4,8] <- 1
-  R[4,14] <- -1
-  
-  q <- matrix(c(0, 1, 0, 0), ncol=1, nrow=4)
-  wtr <- wald_test(R, q, fitted_model$par, S)
-  # put results in table
-  wt_table <- data.frame(Test="Perceptual Separability of dimension A", Wald_Statistic=wtr$stat, df=wtr$df, pvalue=wtr$pval, Violation=wtr$viol)
-  
-  
-  #---------------------------------------------
-  # global test for PS of dimension B from dimension A
-  R <- matrix(0,nrow=4,ncol=K)
-  R[1,2] <- 1
-  R[2,9] <- 1
-  R[3,4] <- 1
-  R[3,6] <- -1
-  R[4,12] <- 1
-  R[4,15] <- -1
+  if (fitted_model$model=="GRT-wIND: full"){
+    # get number of subjects N and parameters K
+    N <- length(data)
+    K <- length(fitted_model$par)
     
-  q <- matrix(c(0, 1, 0, 0), ncol=1, nrow=4)
-  wtr <- wald_test(R, q, fitted_model$par, S)
-  # put results in table
-  wt_table <- rbind(wt_table, data.frame(Test="Perceptual Separability of dimension B", Wald_Statistic=wtr$stat, df=wtr$df, pvalue=wtr$pval, Violation=wtr$viol))
-  
-  #------------------------------------------------
-  # global test for PI
-  R <- matrix(0, nrow=4, ncol=K)
-  R[1,7] <- 1
-  R[2,10] <- 1
-  R[3,13] <- 1
-  R[4,16] <- 1
-  
-  q <- matrix(c(0, 0, 0, 0), ncol=1, nrow=4)
-  wtr <- wald_test(R, q, fitted_model$par, S)  
-  # put results in table
-  wt_table <- rbind(wt_table, data.frame(Test="Perceptual Independence", Wald_Statistic=wtr$stat, df=wtr$df, pvalue=wtr$pval, Violation=wtr$viol))
-  
-  #----------------------------------------------
-  # Test of average DS of dimension A from dimension B
-  R <- matrix(0, nrow=1, ncol=K)
-  R[16+((1:N)-1)*6+3] <- 1
+    # get hessian
+    if (estimate_hess==T){
+      H <- numDeriv::hessian(func=grt_wind_nll, x=fitted_model$par, data=data, method.args=list(d=0.01, r=6))
+    } else {
+      H <- fitted_model$hessian
+    }
     
-  q <- matrix(0, ncol=1, nrow=1)
-  wtr <- wald_test(R, q, fitted_model$par, S)
-  # put results in table
-  wt_table <- rbind(wt_table, data.frame(Test="Average Decisional Separability of dimension A", Wald_Statistic=wtr$stat, df=wtr$df, pvalue=wtr$pval, Violation=wtr$viol))
-  
-  #------------------------------------------------
-  # Test of individual DS of dimension A from dimension B
-  R <- matrix(0, nrow=N, ncol=K)
-  for (i in 1:N){
-    R[i,16+(i-1)*6+3] <- 1
+    # estimate covariance matrix by inverting the Hessian
+    S <- solve(H)
+    if (any(is.infinite(S))){
+      S <- MASS::ginv(H)          # if inversion failed, get P-M pseudoinverse (requires package MASS)
+    }
+    
+    #----------------------------------------------
+    # global test for PS of dimension A from dimension B
+    R <- matrix(0, nrow=4, ncol=K)
+    R[1,3] <- 1
+    R[2,11] <- 1
+    R[3,1] <- 1
+    R[3,5] <- -1
+    R[4,8] <- 1
+    R[4,14] <- -1
+    
+    q <- matrix(c(0, 1, 0, 0), ncol=1, nrow=4)
+    wtr <- wald_test(R, q, fitted_model$par, S)
+    # put results in table
+    wt_table <- data.frame(Test="Perceptual Separability of dimension A", Wald_Statistic=wtr$stat, df=wtr$df, pvalue=wtr$pval, Violation=wtr$viol)
+    
+    
+    #---------------------------------------------
+    # global test for PS of dimension B from dimension A
+    R <- matrix(0,nrow=4,ncol=K)
+    R[1,2] <- 1
+    R[2,9] <- 1
+    R[3,4] <- 1
+    R[3,6] <- -1
+    R[4,12] <- 1
+    R[4,15] <- -1
+    
+    q <- matrix(c(0, 1, 0, 0), ncol=1, nrow=4)
+    wtr <- wald_test(R, q, fitted_model$par, S)
+    # put results in table
+    wt_table <- rbind(wt_table, data.frame(Test="Perceptual Separability of dimension B", Wald_Statistic=wtr$stat, df=wtr$df, pvalue=wtr$pval, Violation=wtr$viol))
+    
+    #------------------------------------------------
+    # global test for PI
+    R <- matrix(0, nrow=4, ncol=K)
+    R[1,7] <- 1
+    R[2,10] <- 1
+    R[3,13] <- 1
+    R[4,16] <- 1
+    
+    q <- matrix(c(0, 0, 0, 0), ncol=1, nrow=4)
+    wtr <- wald_test(R, q, fitted_model$par, S)  
+    # put results in table
+    wt_table <- rbind(wt_table, data.frame(Test="Perceptual Independence", Wald_Statistic=wtr$stat, df=wtr$df, pvalue=wtr$pval, Violation=wtr$viol))
+    
+    #----------------------------------------------
+    # Test of average DS of dimension A from dimension B
+    R <- matrix(0, nrow=1, ncol=K)
+    R[16+((1:N)-1)*6+3] <- 1
+    
+    q <- matrix(0, ncol=1, nrow=1)
+    wtr <- wald_test(R, q, fitted_model$par, S)
+    # put results in table
+    wt_table <- rbind(wt_table, data.frame(Test="Average Decisional Separability of dimension A", Wald_Statistic=wtr$stat, df=wtr$df, pvalue=wtr$pval, Violation=wtr$viol))
+    
+    #------------------------------------------------
+    # Test of individual DS of dimension A from dimension B
+    R <- matrix(0, nrow=N, ncol=K)
+    for (i in 1:N){
+      R[i,16+(i-1)*6+3] <- 1
+    }
+    
+    q <- matrix(0, nrow=N, ncol=1)
+    wtr <- wald_test(R, q, fitted_model$par, S)
+    # put results in table
+    wt_table <- rbind(wt_table, data.frame(Test="Individual Decisional Separability of dimension A", Wald_Statistic=wtr$stat, df=wtr$df, pvalue=wtr$pval, Violation=wtr$viol))
+    
+    #----------------------------------------------
+    # Test of average DS of dimension B from dimension A
+    R <- matrix(0, nrow=1, ncol=K)
+    R[16+((1:N)-1)*6+5] <- 1
+    
+    q <- matrix(0, ncol=1, nrow=1)
+    wtr <- wald_test(R, q, fitted_model$par, S)
+    # put results in table
+    wt_table <- rbind(wt_table, data.frame(Test="Average Decisional Separability of dimension B", Wald_Statistic=wtr$stat, df=wtr$df, pvalue=wtr$pval, Violation=wtr$viol))
+    
+    #------------------------------------------------
+    # Test of individual DS of dimension B from dimension A
+    R <- matrix(0, nrow=N, ncol=K)
+    for (i in 1:N){
+      R[i,16+(i-1)*6+5] <- 1
+    }
+    
+    q <- matrix(0, nrow=N, ncol=1)
+    wtr <- wald_test(R, q, fitted_model$par, S)
+    # put results in table
+    wt_table <- rbind(wt_table, data.frame(Test="Individual Decisional Separability of dimension B", Wald_Statistic=wtr$stat, df=wtr$df, pvalue=wtr$pval, Violation=wtr$viol))
+    
+    
+    #--------------------------------------------------
+    # Test of equal variances
+    R <- matrix(0, nrow=6, ncol=K)
+    R[1,8] <- 1
+    R[2,9] <- 1
+    R[3,11] <- 1
+    R[4,12] <- 1
+    R[5,14] <- 1
+    R[6,15] <- 1
+    
+    q <- matrix(1, nrow=6, ncol=1)
+    wtr <- wald_test(R, q, fitted_model$par, S)
+    # put results in table
+    wt_table <- rbind(wt_table, data.frame(Test="Equal Variances in All Distributions", Wald_Statistic=wtr$stat, df=wtr$df, pvalue=wtr$pval, Violation=wtr$viol))
+    
+    #---------------------------------------------------
+    # change column names
+    names(wt_table) <- c("Test", "Wald stat", "DF", "P-value", "Violation?")
+    
+    # return a new grt_wind_fit object, but with hessian updated
+    # and a new results table
+    fitted_model$wald_test <- wt_table
+    fitted_model$hessian <- H
+    
+  } else if (fitted_model$model=="GRT-wIND: VAR1"){
+    fitted_model <- wald_grt_wind_VAR1(fitted_model, data, estimate_hess)
   }
   
-  q <- matrix(0, nrow=N, ncol=1)
-  wtr <- wald_test(R, q, fitted_model$par, S)
-  # put results in table
-  wt_table <- rbind(wt_table, data.frame(Test="Individual Decisional Separability of dimension A", Wald_Statistic=wtr$stat, df=wtr$df, pvalue=wtr$pval, Violation=wtr$viol))
-  
-  #----------------------------------------------
-  # Test of average DS of dimension B from dimension A
-  R <- matrix(0, nrow=1, ncol=K)
-  R[16+((1:N)-1)*6+5] <- 1
-  
-  q <- matrix(0, ncol=1, nrow=1)
-  wtr <- wald_test(R, q, fitted_model$par, S)
-  # put results in table
-  wt_table <- rbind(wt_table, data.frame(Test="Average Decisional Separability of dimension B", Wald_Statistic=wtr$stat, df=wtr$df, pvalue=wtr$pval, Violation=wtr$viol))
-  
-  #------------------------------------------------
-  # Test of individual DS of dimension B from dimension A
-  R <- matrix(0, nrow=N, ncol=K)
-  for (i in 1:N){
-    R[i,16+(i-1)*6+5] <- 1
-  }
-  
-  q <- matrix(0, nrow=N, ncol=1)
-  wtr <- wald_test(R, q, fitted_model$par, S)
-  # put results in table
-  wt_table <- rbind(wt_table, data.frame(Test="Individual Decisional Separability of dimension B", Wald_Statistic=wtr$stat, df=wtr$df, pvalue=wtr$pval, Violation=wtr$viol))
-  
-  
-  #--------------------------------------------------
-  # Test of equal variances
-  R <- matrix(0, nrow=6, ncol=K)
-  R[1,8] <- 1
-  R[2,9] <- 1
-  R[3,11] <- 1
-  R[4,12] <- 1
-  R[5,14] <- 1
-  R[6,15] <- 1
-  
-  q <- matrix(1, nrow=6, ncol=1)
-  wtr <- wald_test(R, q, fitted_model$par, S)
-  # put results in table
-  wt_table <- rbind(wt_table, data.frame(Test="Equal Variances in All Distributions", Wald_Statistic=wtr$stat, df=wtr$df, pvalue=wtr$pval, Violation=wtr$viol))
-  
-  #---------------------------------------------------
-  # change column names
-  names(wt_table) <- c("Test", "Wald stat", "DF", "P-value", "Violation?")
-  
-  # return a new grt_wind_fit object, but with hessian updated
-  # and a new results table
-  fitted_model$wald_test <- wt_table
-  fitted_model$hessian <- H
   return(fitted_model)
   
 }

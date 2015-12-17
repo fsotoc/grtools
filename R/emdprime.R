@@ -11,10 +11,10 @@ emdprime <- function(m){
   fa1 <- P[2,1] + P[2,3]
   h2 <- P[3,1] + P[3,3]
   fa2 <- P[4,1] + P[4,3]
-
+  
   #compute d' and test for significant difference
   A <- testd(h1, fa1, h2, fa2, sum(m[1,]), sum(m[2,]), sum(m[3,]), sum(m[4,]))
-
+  
   # check whether test was significant
   if (A$p_value < 0.05) {
     Pass <- 'NO'

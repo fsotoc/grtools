@@ -190,7 +190,7 @@ grt_wind_fit <- function(cmats, start_params=c(), rand_pert=0.3, control=list())
     control$ndeps <- rep(1e-2, times=length(start_params))
   }
   if ( !("factr" %in% names(control)) ){
-    control$factr <- 1e-5
+    control$factr <- 1e+5
   }
   
   # find maximum likelihood estimates
