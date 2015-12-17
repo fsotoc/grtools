@@ -529,6 +529,6 @@ order_aic <-function(fitted_models) {
   ordered_aic <- data.frame(model,L,aic_list,aic_weight)
   colnames(ordered_aic) <- c("model","log-likelihood", "AIC", "AIC weight")
   ordered_aic <- ordered_aic[order(-aic_weight),]
-  ordered_aic[4] <- prettyNum(round(ordered_aic[4], digits=3), nsmall=2)
+  ordered_aic[4] <- prettyNum(round(ordered_aic[4], digits=3)[[1]], nsmall=2)
   return(ordered_aic)
 }
