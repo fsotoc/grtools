@@ -1,12 +1,19 @@
 Package: grtools
 Type: Package
-Title: General Recognition Theory tools for the analysis of perceptual independence
+Title: General Recognition Theory tools for the analysis of perceptual
+    independence
 Version: 0.1.2
 Date: 2015-03-26
 Author: Fabian Soto, Emily Zheng
 Maintainer: Fabian Soto <fabian.soto@psych.ucsb.edu>
-Description: Statistical tools from General Recognition Theory for psychophysical data analyses aimed at determining independent processing of perceptual dimensions.
+Description: Statistical tools from General Recognition Theory for
+    psychophysical data analyses aimed at determining independent processing of
+    perceptual dimensions.
 License: GPL (>= 2)
-Imports: Rcpp (>= 0.11.2), numDeriv
-Suggests: MASS
+Imports:
+    Rcpp (>= 0.11.2),
+    numDeriv
+Suggests:
+    MASS
 LinkingTo: Rcpp
+RoxygenNote: 5.0.1
