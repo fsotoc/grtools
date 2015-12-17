@@ -1,7 +1,11 @@
 testp <- function(pp1, pp2, n1, n2) {
-  
-  # replace 0 and 1 by close approximations to avoid Inf values
+
+  # if any input is NaN, it was computed as zero divided by zero; replace by 1e-10
   props = c(pp1, pp2)
+  if (any(is.nan(props))){warning("Proportions in the data equal to 0; replaced by 1e-10")}
+  props[is.nan(props)] <- 1e-10
+    
+  # replace 0 and 1 by close approximations to avoid Inf values
   if (any(props==0)){warning("Proportions in the data equal to 0; replaced by 1e-10")}
   props[props==0] <- 1e-10
   if (any(props==1)){warning("Proportions in the data equal to 1; replaced by 1-(1e-10)")}
