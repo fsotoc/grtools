@@ -1,5 +1,16 @@
 testc2 <- function(fa1, fa2, n1_n, n2_n){
   
+  # replace 0 and 1 by close approximations to avoid Inf values
+  props = (h1, fa1, h2, fa2)
+  if (any(props==0)){warning("Proportions in the data equal to 0; replaced by 1e-10")}
+  props[props==0] <- 1e-10
+  if (any(props==1)){warning("Proportions in the data equal to 1; replaced by 1-(1e-10)")}
+  props[props==1] <- 1-1e-10
+  h1 <- props[1]
+  fa1 <- props[2]
+  h2 <- props[3]
+  fa2 <- props[4]
+  
   # compute c1 and c2
   c1 <- qnorm(fa1)
   c2 <- qnorm(fa2)
