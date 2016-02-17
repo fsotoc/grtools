@@ -105,7 +105,7 @@ sumstats_garner <- function(trial_data, test_incorrect=F){
                                             GI_effect=gi_effect)  )
   
   # we only use interference trials for invariance tests
-  trial_data <- trial_data[trial_data[1,]==2,2:5]
+  trial_data <- trial_data[trial_data[,1]==2,2:5]
   
   # marginal response invariance
   # create an incomplete confusion matrix to use function mritest

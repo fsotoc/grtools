@@ -45,42 +45,42 @@ mrti_test <- function(dt, test_incorrect=F, test="ks"){
                              P_value=ksr$p.value,
                              Pass=Pass))
     
-    # if requested, test rt distributions for incorrect trials
-    if (test_incorrect){
-      # relevant level 1
-      ksr <- ks.test(dt$rt[dt$relevant_level==1 & dt$irrelevant_level==1 & dt$accuracy==0],
-                   dt$rt[dt$relevant_level==1 & dt$irrelevant_level==2 & dt$accuracy==0])
-      
-      if (ksr$p.value<.05){
-        Pass="NO"
-      } else {
-        Pass="YES"
-      }
-      
-      results<-rbind(results,c(Distribution="Incorrect trials",
-                               Test="Level 1 of Relevant Dimension",
-                               KS_stat=ksr$statistic,
-                               P_value=ksr$p.value,
-                               Pass=Pass))
-      
-      # relevant level 2
-      ksr<-ks.test(dt$rt[dt$relevant_level==2 & dt$irrelevant_level==1 & dt$accuracy==0],
-                   dt$rt[dt$relevant_level==2 & dt$irrelevant_level==2 & dt$accuracy==0])
-      
-      if (ksr$p.value<.05){
-        Pass="NO"
-      } else {
-        Pass="YES"
-      }
-      
-      results<-rbind(results,c(Distribution="Incorrect trials",
-                               Test="Level 2 of Relevant Dimension",
-                               KS_stat=ksr$statistic,
-                               P_value=ksr$p.value,
-                               Pass=Pass))
-    }
-    
-    
+#     # if requested, test rt distributions for incorrect trials
+#     if (test_incorrect){
+#       # relevant level 1
+#       ksr <- ks.test(dt$rt[dt$relevant_level==1 & dt$irrelevant_level==1 & dt$accuracy==0],
+#                    dt$rt[dt$relevant_level==1 & dt$irrelevant_level==2 & dt$accuracy==0])
+#       
+#       if (ksr$p.value<.05){
+#         Pass="NO"
+#       } else {
+#         Pass="YES"
+#       }
+#       
+#       results<-rbind(results,c(Distribution="Incorrect trials",
+#                                Test="Level 1 of Relevant Dimension",
+#                                KS_stat=ksr$statistic,
+#                                P_value=ksr$p.value,
+#                                Pass=Pass))
+#       
+#       # relevant level 2
+#       ksr<-ks.test(dt$rt[dt$relevant_level==2 & dt$irrelevant_level==1 & dt$accuracy==0],
+#                    dt$rt[dt$relevant_level==2 & dt$irrelevant_level==2 & dt$accuracy==0])
+#       
+#       if (ksr$p.value<.05){
+#         Pass="NO"
+#       } else {
+#         Pass="YES"
+#       }
+#       
+#       results<-rbind(results,c(Distribution="Incorrect trials",
+#                                Test="Level 2 of Relevant Dimension",
+#                                KS_stat=ksr$statistic,
+#                                P_value=ksr$p.value,
+#                                Pass=Pass))
+#     }
+#     
+#     
     
     
   }
