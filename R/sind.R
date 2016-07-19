@@ -14,7 +14,7 @@ sind <- function(m){
     marg_p <- matrix(c((P[i,1] + P[i,3]),
                        (P[i,2] + P[i,4]),
                        (P[i,1] + P[i,2]),
-                       (P[i,2] + P[i,4])),
+                       (P[i,3] + P[i,4])),
                      nrow=4, ncol=2, byrow=TRUE)
     
     #computing expected probability (ep) from sampling indepedence (SI)
