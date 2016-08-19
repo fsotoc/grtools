@@ -52,7 +52,7 @@ wald <- function(x, ...) UseMethod("wald")
 #' @export
 wald.grt_wind_fit <- function(fitted_model, data, estimate_hess=T){
   
-  if (fitted_model$model=="GRT-wIND: full"){
+  if (fitted_model$model=="GRT-wIND"){
     # get number of subjects N and parameters K
     N <- length(data)
     K <- length(fitted_model$par)
