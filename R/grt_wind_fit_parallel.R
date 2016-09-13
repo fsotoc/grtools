@@ -20,9 +20,9 @@
 #' face perception. \emph{Psychonomic Bulletin & Review, 22}(1), 88-111.
 #' 
 #' @export
-grt_wind_fit_parallel <- function(cmats, start_params=c(), model="full", rand_pert=0.3,
-                            control=list(),
-                            n_reps, n_cores=0) {
+grt_wind_fit_parallel <- function(cmats, start_params=c(), rand_pert=0.3,
+                                  control=list(),
+                                  n_reps, n_cores=0) {
   
   
   # Calculate the number of available cores
@@ -42,17 +42,12 @@ grt_wind_fit_parallel <- function(cmats, start_params=c(), model="full", rand_pe
   # Initiate cluster and load package in the workers
   cl <- parallel::makeCluster(n_cores)
   parallel::clusterEvalQ(cl, library(grtools))
-  parallel::clusterEvalQ(cl, Rcpp::sourceCpp('~/Dropbox/grt/R_package/grtools/src/matrixloglikC.cpp'))
-  parallel::clusterEvalQ(cl, source('~/Dropbox/grt/R_package/grtools/R/grt_wind_nll.R'))
-  parallel::clusterEvalQ(cl, source('~/Dropbox/grt/R_package/grtools/R/grt_wind_fit_beta.R'))
-  parallel::clusterEvalQ(cl, source('~/Dropbox/grt/R_package/grtools/R/pmatrix.R'))
   
   # Create a list with repetitions of the data
   rep_cmats <- rep(list(cmats), n_reps)
   
   # run in parallel
-  results <- parallel::parLapply(cl, rep_cmats, grt_wind_fit_beta, 
-                                 model = 'VAR1',
+  results <- parallel::parLapply(cl, rep_cmats, grt_wind_fit, 
                                  start_params=start_params,
                                  rand_pert=rand_pert,
                                  control=control)
