@@ -16,7 +16,7 @@ econdc <- function(m, use_kadlec=T) {
   # run test depending on whether we use Kadlec's definition of c
   # vs. Macmillan and Creelman's definition
   if (!use_kadlec) {
-    A <- ctest(h1, fa1, h2, fa2, 
+    A <- testc(h1, fa1, h2, fa2, 
                sum(m[1,1:2]), sum(m[2,1:2]), sum(m[1,3:4]), sum(m[2,3:4]))
   } else {
     A <- testc2(fa1, fa2, sum(m[2,1:2]), sum(m[2,3:4]))
@@ -30,9 +30,7 @@ econdc <- function(m, use_kadlec=T) {
   }
   
   #store results in dataframe
-  results <- data.frame(Test="c_A conditional on B1", 
-                        c_hit=A$c[1], c_miss=A$c[2], z=A$z,
-                        p_value=A$p_value, Pass=pass, stringsAsFactors=FALSE)
+  results <- data.frame(Test="c_A conditional on B1",c_hit=A$c[1], c_miss=A$c[2], z=A$z,p_value=A$p_value, Pass=pass, stringsAsFactors=FALSE)
   
   #----------------------------------------
   # Test c for A conditional on B2
@@ -46,8 +44,7 @@ econdc <- function(m, use_kadlec=T) {
   # run test depending on whether we use Kadlec's definition of c
   # vs. Macmillan and Creelman's definition
   if (!use_kadlec) {
-    A <- ctest(h1, fa1, h2, fa2,
-               sum(m[3,3:4]), sum(m[4,3:4]), sum(m[3,1:2]), sum(m[4,1:2]))
+    A <- testc(h1, fa1, h2, fa2, sum(m[3,3:4]), sum(m[4,3:4]), sum(m[3,1:2]), sum(m[4,1:2]))
   } else {
     A <- testc2(fa1, fa2, sum(m[4,3:4]), sum(m[4,1:2]))
   }
@@ -60,9 +57,7 @@ econdc <- function(m, use_kadlec=T) {
   }
   
   #add results to dataframe
-  results<-rbind(results,c("c_A conditional on B2",
-                           c_hit=A$c[1], c_miss=A$c[2], z=A$z,
-                           p_value=A$p_value, Pass=pass))
+  results<-rbind(results,c("c_A conditional on B2", c_hit=A$c[1], c_miss=A$c[2], z=A$z, p_value=A$p_value, Pass=pass))
   
   #----------------------------------------
   # Test c for B conditional on A1  
@@ -76,8 +71,7 @@ econdc <- function(m, use_kadlec=T) {
   # run test depending on whether we use Kadlec's definition of c
   # vs. Macmillan and Creelman's definition
   if (!use_kadlec) {
-    A <- ctest(h1, fa1, h2, fa2, 
-               sum(m[1,c(1,3)]), sum(m[3,c(1,3)]), sum(m[1,c(2,4)]), sum(m[3,c(2,4)]))
+    A <- testc(h1, fa1, h2, fa2, sum(m[1,c(1,3)]), sum(m[3,c(1,3)]), sum(m[1,c(2,4)]), sum(m[3,c(2,4)]))
   } else {
     A <- testc2(fa1, fa2, sum(m[3,c(1,3)]), sum(m[3,c(2,4)]))
   }
@@ -91,8 +85,7 @@ econdc <- function(m, use_kadlec=T) {
   
   # add results to dataframe
   results <- rbind(results, 
-                   c("c_B conditional on A1", c_hit=A$c[1], c_miss=A$c[2], z=A$z,
-                     p_value=A$p_value, Pass=pass) )
+                   c("c_B conditional on A1", c_hit=A$c[1], c_miss=A$c[2], z=A$z, p_value=A$p_value, Pass=pass) )
 
   #----------------------------------------
   # Test c for B conditional on A2  
@@ -106,8 +99,7 @@ econdc <- function(m, use_kadlec=T) {
   # run test depending on whether we use Kadlec's definition of c
   # vs. Macmillan and Creelman's definition
   if (!use_kadlec) {
-    A <- ctest(h1, fa1, h2, fa2, 
-               sum(m[2,c(2,4)]), sum(m[4,c(2,4)]), sum(m[2,c(1,3)]), sum(m[4,c(1,3)]))
+    A <- testc(h1, fa1, h2, fa2, sum(m[2,c(2,4)]), sum(m[4,c(2,4)]), sum(m[2,c(1,3)]), sum(m[4,c(1,3)]))
   } else {
     A <- testc2(fa1, fa2, sum(m[4,c(2,4)]), sum(m[4,c(1,3)]))
   }
@@ -120,9 +112,7 @@ econdc <- function(m, use_kadlec=T) {
   }
   
   #add results to dataframe
-  results <- rbind(results, 
-                   c("c_B conditional on A2", c_hit=A$c[1], c_miss=A$c[2], z=A$z,
-                     p_value=A$p_value, Pass=pass) )
+  results <- rbind(results, c("c_B conditional on A2", c_hit=A$c[1], c_miss=A$c[2], z=A$z, p_value=A$p_value, Pass=pass) )
   
   #output
   return(results)

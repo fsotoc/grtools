@@ -13,6 +13,16 @@ summary.grt_wind_fit <- function(fitted_model) {
   cat(paste("\tLog-likelihood:", round(-fitted_model$value, 2), "\n"))
   cat(paste("\tR-squared:", round(fitted_model$R2, 4), "\n"))
   
-  cat("\nResults of the Wald tests:\n")
-  print(fitted_model$wald_test, digits=2, row.names=F)
+  if (!is.null(fitted_model$lr_test)){
+    cat("\nResults of the Likelihood Ratio tests:\n")
+    forprint <- fitted_model$lr_test
+    forprint$pval <- round(forprint$pval, digits = 3)
+    print(forprint, digits=3, row.names=F)
+  }
+  
+  if (!is.null(fitted_model$wald)){
+    cat("\nResults of the Wald tests:\n")
+    print(fitted_model$wald_test, digits=3, row.names=F)
+  }
+  
 }

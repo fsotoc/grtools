@@ -29,7 +29,7 @@ testc <- function(h1, fa1, h2, fa2, n1_n, n1_s, n2_n, n2_s) {
   z <- (c1 - c2) / (sqrt(var_c1 + var_c2))
 
   #compute p-value, two-tailed
-  p_val <- 2*(pnorm(-abs(z)))
+  p_val <- 2 * (pnorm(-abs(z)))
   
   #output
   return(list(c=(c(c1,c2)), z=z, p_value=p_val))

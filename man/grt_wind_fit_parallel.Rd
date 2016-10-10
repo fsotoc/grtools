@@ -16,6 +16,13 @@ optimization algorithm. You can provide either the group parameters or both
 group and individual parameters. It will be created automatically if not
 provided (see Details).}
 
+\item{model}{A string indicating what GRT-wIND model to run. By default is the
+full model ("full"), but restricted models are also available. "PS(A)" and "PS(B)"
+are models that assume PS for dimension A and dimension B, respectively. "PI" is
+a model that assumes perceptual independence.  "DS(A)" and "DS(B)" are models
+that assume DS for dimension A ("PS(A)") and dimension B ("PS(B)"), respectively.
+"1-VAR" is a model that assumes that all variances are equal to one.}
+
 \item{rand_pert}{Maximum value of a random perturbation added to the starting
 parameters. With a value of zero, the algorithm is started exactly at
 \code{start_params}. As the value of \code{rand_pert} is increased, the starting

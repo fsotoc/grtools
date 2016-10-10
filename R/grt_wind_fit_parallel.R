@@ -20,7 +20,7 @@
 #' face perception. \emph{Psychonomic Bulletin & Review, 22}(1), 88-111.
 #' 
 #' @export
-grt_wind_fit_parallel <- function(cmats, start_params=c(), rand_pert=0.3,
+grt_wind_fit_parallel <- function(cmats, start_params=c(), model="full", rand_pert=0.3,
                                   control=list(),
                                   n_reps, n_cores=0) {
   
@@ -49,6 +49,7 @@ grt_wind_fit_parallel <- function(cmats, start_params=c(), rand_pert=0.3,
   # run in parallel
   results <- parallel::parLapply(cl, rep_cmats, grt_wind_fit, 
                                  start_params=start_params,
+                                 model = model,
                                  rand_pert=rand_pert,
                                  control=control)
   

@@ -4,12 +4,12 @@
 \alias{wald}
 \title{Run Wald tests of separability and independence}
 \usage{
-wald(fitted_model, data, estimate_hess=T)
+wald(fitted_model, cmats, estimate_hess=T)
 }
 \arguments{
 \item{fitted_model}{An object returned by \code{\link{grt_wind_fit}}}
 
-\item{data}{List of confusion matrices. Each entry in the list should contain
+\item{cmats}{List of confusion matrices. Each entry in the list should contain
 the 4x4 confusion matrix from one individual. For a detailed description of
 how to create this list, see \code{\link{grt_wind_fit}}}
 
@@ -35,17 +35,17 @@ object.
 # Create list with confusion matrices # In this example, we enter data from
 # an experiment with 5 participants. For each participant, inside the c(...),
 # enter the data from row 1 in the matrix, then from row 2, etc.
-data <- list(matrix(c(100,1,9,8,10,110,7,4,31,3,80,10,54,4,52,19),nrow=4,ncol=4,byrow=TRUE))
-data[[2]] <- matrix(c(122,7,0,1,1,102,1,5,3,2,111,9),nrow=4,ncol=4,byrow=TRUE)
-data[[3]] <- matrix(c(107,0,5,0,0,101,1,4,3,1,113,2,0,3,1,108),nrow=4,ncol=4,byrow=TRUE)
-data[[4]] <- matrix(c(122,1,0,0,1,120,0,0,0,0,118,6,0,1,6,118),nrow=4,ncol=4,byrow=TRUE)
-data[[5]] <- matrix(c(89,17,6,4,4,81,8,6,14,7,86,1,11,25,17,26),nrow=4,ncol=4,byrow=TRUE)
+cmats <- list(matrix(c(161,41,66,32,24,147,64,65,37,41,179,43,14,62,22,202),nrow=4,ncol=4,byrow=TRUE))
+cmats[[2]] <- matrix(c(126,82,67,25,8,188,54,50,34,75,172,19,7,103,14,176),nrow=4,ncol=4,byrow=TRUE)
+cmats[[3]] <- matrix(c(117,64,89,30,11,186,69,34,21,81,176,22,10,98,30,162),nrow=4,ncol=4,byrow=TRUE)
+cmats[[4]] <- matrix(c(168,57,47,28,15,203,33,49,58,54,156,32,9,96,9,186),nrow=4,ncol=4,byrow=TRUE)
+cmats[[5]] <- matrix(c(169,53,53,25,34,168,69,29,38,48,180,34,19,44,60,177),nrow=4,ncol=4,byrow=TRUE)
 
 # fit the model to data
-fitted_model <- grt_wind_fit(data)
+fitted_model <- grt_wind_fit(cmats)
 
 #' # run the wald tests
-fitted_model <- wald(fitted_model, data)
+fitted_model <- wald(fitted_model, cmats)
 
 # see the results
 summary(fitted_model)

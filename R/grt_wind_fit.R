@@ -9,6 +9,12 @@
 #'   optimization algorithm. You can provide either the group parameters or both
 #'   group and individual parameters. It will be created automatically if not
 #'   provided (see Details).
+#' @param model A string indicating what GRT-wIND model to run. By default is the
+#' full model ("full"), but restricted models are also available. "PS(A)" and "PS(B)"
+#' are models that assume PS for dimension A and dimension B, respectively. "PI" is
+#' a model that assumes perceptual independence.  "DS(A)" and "DS(B)" are models
+#' that assume DS for dimension A ("PS(A)") and dimension B ("PS(B)"), respectively.
+#' "1-VAR" is a model that assumes that all variances are equal to one.
 #' @param rand_pert Maximum value of a random perturbation added to the starting
 #'   parameters. With a value of zero, the algorithm is started exactly at
 #'   \code{start_params}. As the value of \code{rand_pert} is increased, the starting
@@ -80,11 +86,11 @@
 #' # Create list with confusion matrices # In this example, we enter data from
 #' # an experiment with 5 participants. For each participant, inside the c(...),
 #' # enter the data from row 1 in the matrix, then from row 2, etc.
-#' cmats <- list(matrix(c(100,1,9,8,10,110,7,4,31,3,80,10,54,4,52,19),nrow=4,ncol=4,byrow=TRUE))
-#' cmats[[2]] <- matrix(c(122,7,0,1,1,102,1,5,3,2,111,9,11,7,11,106),nrow=4,ncol=4,byrow=TRUE)
-#' cmats[[3]] <- matrix(c(107,0,5,0,0,101,1,4,3,1,113,2,0,3,1,108),nrow=4,ncol=4,byrow=TRUE)
-#' cmats[[4]] <- matrix(c(122,1,0,0,1,120,0,0,0,0,118,6,0,1,6,118),nrow=4,ncol=4,byrow=TRUE)
-#' cmats[[5]] <- matrix(c(89,17,6,4,4,81,8,6,14,7,86,1,11,25,17,26),nrow=4,ncol=4,byrow=TRUE)
+#' cmats <- list(matrix(c(161,41,66,32,24,147,64,65,37,41,179,43,14,62,22,202),nrow=4,ncol=4,byrow=TRUE))
+#' cmats[[2]] <- matrix(c(126,82,67,25,8,188,54,50,34,75,172,19,7,103,14,176),nrow=4,ncol=4,byrow=TRUE)
+#' cmats[[3]] <- matrix(c(117,64,89,30,11,186,69,34,21,81,176,22,10,98,30,162),nrow=4,ncol=4,byrow=TRUE)
+#' cmats[[4]] <- matrix(c(168,57,47,28,15,203,33,49,58,54,156,32,9,96,9,186),nrow=4,ncol=4,byrow=TRUE)
+#' cmats[[5]] <- matrix(c(169,53,53,25,34,168,69,29,38,48,180,34,19,44,60,177),nrow=4,ncol=4,byrow=TRUE)
 #' 
 #' # fit the model to data
 #' fitted_model <- grt_wind_fit(cmats)
@@ -92,7 +98,12 @@
 #' # plot a graphical representation of the fitted model
 #' plot(fitted_model)
 #' 
-#' # optionally, you can run a Wald test of separability and independence
+#' # optionally, you can run likelihood ratio tests of separability and independence
+#' # (recommended method, but very slow)
+#' fitted_model <- lr_test(fitted_model, cmats)
+#' 
+#' # alternatively, you can run a Wald test of separability and independence 
+#' # (less recommended method, due to common problems with numerical estimation, but faster)
 #' fitted_model <- wald(fitted_model, cmats)
 #' 
 #' # print a summary of the fitted model and tests to screen
@@ -103,7 +114,7 @@
 #' fitted_model$indpar
 #' 
 #' @export
-grt_wind_fit <- function(cmats, start_params=c(), rand_pert=0.3, control=list()) {  
+grt_wind_fit <- function(cmats, start_params=c(), model="full", rand_pert=0.3, control=list()) {  
   
   # get number of subjects
   N = length(cmats)
@@ -132,7 +143,8 @@ grt_wind_fit <- function(cmats, start_params=c(), rand_pert=0.3, control=list())
   if (length(start_params)==0){
     
     # choose values for group parameters
-    start_params = c(1,0,0,1,1,1,     # all means either 0 or 1 (PS)
+    start_params = c(0,0,1,0,0,1,1,1,     # all means either 0 or 1 (first mean vector fixed + PS)
+                     1,1,             # A1B1 variances (fixed)
                      0,               # A1B1 correlation (PI)
                      1,1,             # A1B2 variances (PS)
                      0,               # A1B2 correlation (PI)
@@ -141,17 +153,10 @@ grt_wind_fit <- function(cmats, start_params=c(), rand_pert=0.3, control=list())
                      1,1,             # A2B2 variances (PS)
                      0)               # A2B2 correlation (PI)
     
-    # choose values for individual parameters
-    lambda_start <- rep(0.5,N)                                 # start with no selective attention
-    kappa_start <- rep(2,N)                                    # start with no global attention
-    bx_start <- rep(0,N)                                # start with bounds orthogonal to dimension (DS)
-    by_start <- rep(0,N)
-    ax_start <- rep(-0.5,N)                             # start with bound right between the two means
-    ay_start <- rep(-0.5,N)
-    
-  # if only guesses for the group parameters were provided,
-  # then initialize the individual parameters
-  } else if (length(start_params)==16) {
+  } 
+  
+  # if we only have group parameters, initialize individual parameters
+  if (length(start_params)==20) {
     
     lambda_start <- rep(0.5,N)                        # start with no selective attention
     kappa_start <- rep(2,N)                           # start with no global attention
@@ -160,23 +165,114 @@ grt_wind_fit <- function(cmats, start_params=c(), rand_pert=0.3, control=list())
     ax_start <- rep(-0.5,N)                           # start with bound right between the two means
     ay_start <- rep(-0.5,N)
     
+    for (i in 1:N) {
+      start_params <- c(start_params, kappa_start[i], lambda_start[i], bx_start[i], ax_start[i], by_start[i], ay_start[i])
+    }
+    
   }
   
-  # lower and upper limits for group parameters
-  low_params = c(mu_low, mu_low, mu_low, mu_low, mu_low, mu_low, corr_low, var_low, var_low, corr_low, var_low, var_low, corr_low, var_low, var_low, corr_low)
-  up_params = c(mu_up, mu_up, mu_up, mu_up, mu_up, mu_up, corr_up, var_up, var_up, corr_up, var_up, var_up, corr_up, var_up, var_up, corr_up)
+  #----------------------------------------------------------
+  # lower and upper limits
+  # group parameters
+  low_params = c(mu_low, mu_low, mu_low, mu_low, mu_low, mu_low, mu_low, mu_low,  
+                 var_low, var_low, corr_low, 
+                 var_low, var_low, corr_low, 
+                 var_low, var_low, corr_low, 
+                 var_low, var_low, corr_low)
+  up_params = c(mu_up, mu_up, mu_up, mu_up, mu_up, mu_up, mu_up, mu_up, 
+                var_up, var_up, corr_up, 
+                var_up, var_up, corr_up, 
+                var_up, var_up, corr_up, 
+                var_up, var_up, corr_up)
+  
+  # individual parameters
+  for (i in 1:N) {
+    low_params <- c(low_params, kappa_low, lambda_low, b_low, a_low, b_low, a_low)
+    up_params <- c(up_params, kappa_up, lambda_up, b_up, a_up, b_up, a_up)
+  }
   
   
   # now that all possibilities are covered, put together vector with all
   # starting parameters and limits
-  for (i in 1:N) {
-    start_params <- c(start_params, kappa_start[i], lambda_start[i], bx_start[i], ax_start[i], by_start[i], ay_start[i])
-    low_params <- c(low_params, kappa_low, lambda_low, b_low, a_low, b_low, a_low)
-    up_params <- c(up_params, kappa_up, lambda_up, b_up, a_up, b_up, a_up)
+  
+  
+  #--------------------------------------------------------
+  # create arrays indicating what parameters are fixed, depending on model
+  #
+  # 'fixed' is a vector of numerical values.
+  # There are three options
+  # (a) To indicate that the parameter in fn() is optimised over, use 0
+  # (b) To indicate that the parameter in fn() is fixed to its starting value, 
+  # use its index. Thus, if the Nth parameter in fn() is fixed to the starting
+  # value, then fixed[N] <- N.
+  # (c) To indicate that the parameter in fn() is fixed to the value of another
+  # parameter, use the index of that parameter. Thus, if the Nth parameter in fn()
+  # should have the same value as the Mth parameter, then fixed[N] <- M.
+  
+  fixed <- rep(0, length(start_params))
+  # full
+  # for all models, including full, we fix first two means and variances
+  fixed[1] <- 1
+  fixed[2] <- 2
+  fixed[9] <- 9
+  fixed[10] <- 10
+  
+  # PS(A)
+  if (model=="PS(A)"){
+    # fix means along x axis
+    fixed[5] <- 1
+    fixed[7] <- 3
+    # fix variances along x axis
+    fixed[15] <- 9
+    fixed[18] <- 12
+    
+  # PS(B)
+  } else if (model=="PS(B)"){
+    # fix means along y axis
+    fixed[4] <- 2
+    fixed[8] <- 6
+    # fix variances along y axis
+    fixed[13] <- 10
+    fixed[19] <- 16
+    
+  # PI
+  } else if (model=="PI") {
+    # make sure that the starting value of correlations is zero
+    start_params[c(11, 14, 17, 20)] <- 0
+    # set value of correlations to starting value
+    fixed[c(11, 14, 17, 20)] <- c(11, 14, 17, 20)
+    
+  # DS(A)
+  } else if (model=="DS(A)"){
+    for (i in 1:N){
+      # make sure that the starting bound is orthogonal
+      start_params[20+(i-1)*6+3] <- 0
+      # set value of the bound slope to starting value
+      fixed[20+(i-1)*6+3] <- 20+(i-1)*6+3
+    }
+    
+  # DS(B)
+  } else if (model=="DS(B)"){
+    for (i in 1:N){
+      # make sure that the starting bound is orthogonal
+      start_params[20+(i-1)*6+5] <- 0
+      # set value of the bound slope to starting value
+      fixed[20+(i-1)*6+5] <- 20+(i-1)*6+5
+    }
+    
+  # 1-VAR
+  } else if (model=="1-VAR"){
+    # make sure that all starting variances are equal to one
+    start_params[c(9,10,12,13,15,16,18,19)]
+    # set value of variances to starting value
+    fixed[c(9,10,12,13,15,16,18,19)] <- c(9,10,12,13,15,16,18,19)
   }
-
-  # add random perturbations to parameters with maximum value rand_pert
-  start_params <- start_params+(runif(length(start_params))*(2*rand_pert)-rand_pert)
+    
+    
+    
+  # add random perturbations to non-fixed parameters with maximum value rand_pert
+  indx = 1:length(start_params)
+  start_params[!fixed] <- start_params[!fixed]+(runif(length(start_params[!fixed]))*(2*rand_pert)-rand_pert)
   
   
   #--------------------------------------------------------
@@ -187,45 +283,50 @@ grt_wind_fit <- function(cmats, start_params=c(), rand_pert=0.3, control=list())
     control$maxit <- 1e+5
   }
   if ( !("ndeps" %in% names(control)) ){
-    control$ndeps <- rep(1e-2, times=length(start_params))
+    control$ndeps <- rep(1e-2, times=sum(fixed==0))
   }
   if ( !("factr" %in% names(control)) ){
     control$factr <- 1e+5
   }
   
+  
+  
+  #--------------------------------------------------------
   # find maximum likelihood estimates
-  results <- optim(start_params, grt_wind_nll, data=cmats, method='L-BFGS-B', lower=low_params, upper=up_params, control=control, hessian = F)
+  results <- optifix(start_params, fixed, grt_wind_nll, data=cmats, method='L-BFGS-B', lower=low_params, upper=up_params, control=control, hessian = F)
   
   # put in a nice list
-  results$means <- matrix(c(0,0,results$par[1:6]), nrow=4, ncol=2, byrow=T)
+  results$means <- matrix(results$fullpars[1:8], nrow=4, ncol=2, byrow=T)
   results$covmat <- list()
-  results$covmat[[1]] <- matrix(c(1, results$par[7], results$par[7], 1),2,2,byrow=TRUE)
-  results$covmat[[2]] <- matrix(c(results$par[8], results$par[10]*sqrt(results$par[8]*results$par[9]),
-                          results$par[10]*sqrt((results$par[8])*(results$par[9])), results$par[9]),
+  results$covmat[[1]] <- matrix(c(results$fullpars[9], results$fullpars[11]*sqrt(results$fullpars[9]*results$fullpars[10]),
+                                  results$fullpars[9]*sqrt((results$fullpars[10])*(results$fullpars[11])), results$fullpars[9]),
+                                2,2,byrow=TRUE)
+  results$covmat[[2]] <- matrix(c(results$fullpars[12], results$fullpars[14]*sqrt(results$fullpars[12]*results$fullpars[13]),
+                          results$fullpars[14]*sqrt((results$fullpars[12])*(results$fullpars[13])), results$fullpars[13]),
                         2,2,byrow=TRUE)
-  results$covmat[[3]] <- matrix(c(results$par[11], results$par[13]*sqrt(results$par[11]*results$par[12]),
-                          results$par[13]*sqrt(results$par[11]*results$par[12]), results$par[12]),
+  results$covmat[[3]] <- matrix(c(results$fullpars[15], results$fullpars[17]*sqrt(results$fullpars[15]*results$fullpars[16]),
+                          results$fullpars[17]*sqrt(results$fullpars[15]*results$fullpars[16]), results$fullpars[16]),
                         2,2,byrow=TRUE)
-  results$covmat[[4]] <- matrix(c(results$par[14], results$par[16]*sqrt(results$par[14]*results$par[15]),
-                          results$par[16]*sqrt(results$par[14]*results$par[15]), results$par[15]),
+  results$covmat[[4]] <- matrix(c(results$fullpars[18], results$fullpars[20]*sqrt(results$fullpars[18]*results$fullpars[19]),
+                          results$fullpars[20]*sqrt(results$fullpars[18]*results$fullpars[19]), results$fullpars[19]),
                         2,2,byrow=TRUE)
-  results$corr <- results$par[c(7,10,13,16)]
-  results$var <- matrix(c(1,1,results$par[c(8,9,11,12,14,15)]), nrow=4, ncol=2, byrow=T)
+  results$corr <- results$fullpars[c(11,14,17,20)]
+  results$var <- matrix(results$fullpars[c(9,10,12,13,15,16,18,19)], nrow=4, ncol=2, byrow=T)
   
   # individual parameters
   results$indpar <- data.frame()
-  pcount <- 16
+  pcount <- 20
   for (i in 1:N){
     results$indpar <- rbind(results$indpar,
                             data.frame(subject=i,
-                              kappa=results$par[pcount+1],
-                              lambda=results$par[pcount+2],
+                              kappa=results$fullpars[pcount+1],
+                              lambda=results$fullpars[pcount+2],
                               bx1=1,
-                              by1=results$par[pcount+3],
-                              a1=results$par[pcount+4],
-                              bx2=results$par[pcount+5],
+                              by1=results$fullpars[pcount+3],
+                              a1=results$fullpars[pcount+4],
+                              bx2=results$fullpars[pcount+5],
                               by2=1,
-                              a2=results$par[pcount+6]) )
+                              a2=results$fullpars[pcount+6]) )
     pcount <- pcount+6
   }
   
@@ -233,7 +334,7 @@ grt_wind_fit <- function(cmats, start_params=c(), rand_pert=0.3, control=list())
   class(results) <- "grt_wind_fit"
   
   results$N <- N
-  results$model <- "GRT-wIND"
+  results$model <- paste("GRT-wIND_", model, sep="")
   results$predicted <- fitted(results)
   results$observed <- c()
   
@@ -241,8 +342,15 @@ grt_wind_fit <- function(cmats, start_params=c(), rand_pert=0.3, control=list())
     results$observed <- c(results$observed, as.vector(pmatrix(cmats[[i]])))    
   }
   
-  results$R2 <- cor(results$predicted, results$observed)^2
-  
+  # get R2 if possible
+  tryCatch(
+    {
+      results$R2 <- cor(results$predicted, results$observed)^2
+    },
+    error=function(e) {
+      results$R2 <- NA
+    }
+  )
   
   return(results)
   

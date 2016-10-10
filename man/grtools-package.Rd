@@ -12,8 +12,8 @@ Statistical tools from General Recognition Theory for psychophysical data analys
 \tabular{ll}{
 Package: \tab grtools\cr
 Type: \tab Package\cr
-Version: \tab 0.1.2\cr
-Date: \tab 2015-03-26\cr
+Version: \tab 0.2.0\cr
+Date: \tab 2016-09-28\cr
 License: \tab GPL (>= 2)\cr
 }
 \code{grtools} provides functions for the following analyses using general recognition theory:

@@ -4,7 +4,8 @@
 \alias{grt_wind_fit}
 \title{Fit a GRT-wIND model to identification data}
 \usage{
-grt_wind_fit(cmats, start_params = c(), rand_pert = 0.3, control = list())
+grt_wind_fit(cmats, start_params = c(), model = "full", rand_pert = 0.3,
+  control = list())
 }
 \arguments{
 \item{cmats}{List of confusion matrices. Each entry in the list should contain
@@ -14,6 +15,13 @@ the 4x4 confusion matrix from one individual (see Details).}
 optimization algorithm. You can provide either the group parameters or both
 group and individual parameters. It will be created automatically if not
 provided (see Details).}
+
+\item{model}{A string indicating what GRT-wIND model to run. By default is the
+full model ("full"), but restricted models are also available. "PS(A)" and "PS(B)"
+are models that assume PS for dimension A and dimension B, respectively. "PI" is
+a model that assumes perceptual independence.  "DS(A)" and "DS(B)" are models
+that assume DS for dimension A ("PS(A)") and dimension B ("PS(B)"), respectively.
+"1-VAR" is a model that assumes that all variances are equal to one.}
 
 \item{rand_pert}{Maximum value of a random perturbation added to the starting
 parameters. With a value of zero, the algorithm is started exactly at
@@ -87,11 +95,11 @@ Note that a random value will be added to these parameters if
 # Create list with confusion matrices # In this example, we enter data from
 # an experiment with 5 participants. For each participant, inside the c(...),
 # enter the data from row 1 in the matrix, then from row 2, etc.
-cmats <- list(matrix(c(100,1,9,8,10,110,7,4,31,3,80,10,54,4,52,19),nrow=4,ncol=4,byrow=TRUE))
-cmats[[2]] <- matrix(c(122,7,0,1,1,102,1,5,3,2,111,9,11,7,11,106),nrow=4,ncol=4,byrow=TRUE)
-cmats[[3]] <- matrix(c(107,0,5,0,0,101,1,4,3,1,113,2,0,3,1,108),nrow=4,ncol=4,byrow=TRUE)
-cmats[[4]] <- matrix(c(122,1,0,0,1,120,0,0,0,0,118,6,0,1,6,118),nrow=4,ncol=4,byrow=TRUE)
-cmats[[5]] <- matrix(c(89,17,6,4,4,81,8,6,14,7,86,1,11,25,17,26),nrow=4,ncol=4,byrow=TRUE)
+cmats <- list(matrix(c(161,41,66,32,24,147,64,65,37,41,179,43,14,62,22,202),nrow=4,ncol=4,byrow=TRUE))
+cmats[[2]] <- matrix(c(126,82,67,25,8,188,54,50,34,75,172,19,7,103,14,176),nrow=4,ncol=4,byrow=TRUE)
+cmats[[3]] <- matrix(c(117,64,89,30,11,186,69,34,21,81,176,22,10,98,30,162),nrow=4,ncol=4,byrow=TRUE)
+cmats[[4]] <- matrix(c(168,57,47,28,15,203,33,49,58,54,156,32,9,96,9,186),nrow=4,ncol=4,byrow=TRUE)
+cmats[[5]] <- matrix(c(169,53,53,25,34,168,69,29,38,48,180,34,19,44,60,177),nrow=4,ncol=4,byrow=TRUE)
 
 # fit the model to data
 fitted_model <- grt_wind_fit(cmats)
@@ -99,7 +107,12 @@ fitted_model <- grt_wind_fit(cmats)
 # plot a graphical representation of the fitted model
 plot(fitted_model)
 
-# optionally, you can run a Wald test of separability and independence
+# optionally, you can run likelihood ratio tests of separability and independence
+# (recommended method, but very slow)
+fitted_model <- lr_test(fitted_model, cmats)
+
+# alternatively, you can run a Wald test of separability and independence 
+# (less recommended method, due to common problems with numerical estimation, but faster)
 fitted_model <- wald(fitted_model, cmats)
 
 # print a summary of the fitted model and tests to screen
