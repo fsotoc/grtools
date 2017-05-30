@@ -8,7 +8,7 @@
 3. Summary statistics analysis (i.e. Kadlec's MSDA; see Kadlec & Townsend, 1992) for the 2x2 identification experiment.
 4. Summary statistics analysis for the 2x2 Garner filtering task (Ashby & Maddox, 1994).
 
-A tutorial introduction to GRT analyses using **grtools** can be found in [this arXiv paper](https://arxiv.org/abs/1610.03207).
+A tutorial introduction to GRT analyses using **grtools** can be found in [this *Frontiers In Psychology* paper](http://journal.frontiersin.org/article/10.3389/fpsyg.2017.00696/full).
 
 **Note that this package is still under development. This is a pre-release version that has not been extensively tested. We welcome your comments, feature requests, bug reports, etc.**
 
