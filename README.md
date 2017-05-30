@@ -51,3 +51,4 @@ Kadlec, H., & Townsend, J. T. (1992). Signal detection analyses of multidimensio
 
 Soto, F. A., Musgrave, R., Vucovich, L., & Ashby, F. G. (2015). General recognition theory with individual differences: A new method for examining perceptual and decisional interactions with an application to face perception. *Psychonomic Bulletin & Review, 22*(1), 88-111.
 
+Soto, F. A., Zheng, E., & Ashby, F. G. (2017). Testing separability and independence of perceptual dimensions with general recognition theory: A tutorial and new R package (grtools). *Frontiers in Psychology, 8*:696.
