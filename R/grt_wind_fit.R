@@ -299,7 +299,7 @@ grt_wind_fit <- function(cmats, start_params=c(), model="full", rand_pert=0.3, c
   results$means <- matrix(results$fullpars[1:8], nrow=4, ncol=2, byrow=T)
   results$covmat <- list()
   results$covmat[[1]] <- matrix(c(results$fullpars[9], results$fullpars[11]*sqrt(results$fullpars[9]*results$fullpars[10]),
-                                  results$fullpars[9]*sqrt((results$fullpars[10])*(results$fullpars[11])), results$fullpars[9]),
+                                  results$fullpars[11]*sqrt((results$fullpars[9])*(results$fullpars[10])), results$fullpars[9]),
                                 2,2,byrow=TRUE)
   results$covmat[[2]] <- matrix(c(results$fullpars[12], results$fullpars[14]*sqrt(results$fullpars[12]*results$fullpars[13]),
                           results$fullpars[14]*sqrt((results$fullpars[12])*(results$fullpars[13])), results$fullpars[13]),
