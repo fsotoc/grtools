@@ -3,7 +3,8 @@
 #' Run likelihood ratio tests of perceptual separability, decisional separability,
 #' and perceptual independence (see Ashby & Soto, 2015), using the
 #' maximum likelihood parameter estimates stored in a \code{grt_wind_fit}
-#' object.
+#' object. The method considers any restrictions placed in the original model
+#' and stored in \code{grt_wind_fit$restrictions}.
 #' 
 #' @usage lr_test(fitted_model, cmats, n_reps=20, test=c("PS(A)", "PS(B)", "PI", "DS(A)", "DS(B)"))
 #' 
@@ -78,7 +79,7 @@ lr_test.grt_wind_fit <- function(fitted_model, cmats, n_reps=20, test=c("PS(A)",
   # PS(A)
   if (any(test=="PS(A)")) {
     # fit restricted model
-    restricted[["PS(A)"]] <- grt_wind_fit_parallel(cmats, start_params = fitted_model$fullpars, model="PS(A)", n_reps=n_reps)
+    restricted[["PS(A)"]] <- grt_wind_fit_parallel(cmats, start_params = fitted_model$fullpars, model=c("PS(A)",fitted_model$restrictions), n_reps=n_reps)
     
     # run likelihood ratio test
     Chi2 <- 2*(-fitted_model$value + restricted[["PS(A)"]]$value)
@@ -97,7 +98,7 @@ lr_test.grt_wind_fit <- function(fitted_model, cmats, n_reps=20, test=c("PS(A)",
   # PS(B)
   if (any(test=="PS(B)")) {
     # fit restricted model
-    restricted[["PS(B)"]] <- grt_wind_fit_parallel(cmats, start_params = fitted_model$fullpars, model="PS(B)", n_reps=n_reps)
+    restricted[["PS(B)"]] <- grt_wind_fit_parallel(cmats, start_params = fitted_model$fullpars, model=c("PS(B)",fitted_model$restrictions), n_reps=n_reps)
     
     # run likelihood ratio test
     Chi2 <- 2*(-fitted_model$value + restricted[["PS(B)"]]$value)
@@ -117,7 +118,7 @@ lr_test.grt_wind_fit <- function(fitted_model, cmats, n_reps=20, test=c("PS(A)",
   # PI
   if (any(test=="PI")) {
     # fit restricted model
-    restricted[["PI"]] <- grt_wind_fit_parallel(cmats, start_params = fitted_model$fullpars, model="PI", n_reps=n_reps)
+    restricted[["PI"]] <- grt_wind_fit_parallel(cmats, start_params = fitted_model$fullpars, model=c("PI",fitted_model$restrictions), n_reps=n_reps)
     
     # run likelihood ratio test
     Chi2 <- 2*(-fitted_model$value + restricted[["PI"]]$value)
@@ -136,7 +137,7 @@ lr_test.grt_wind_fit <- function(fitted_model, cmats, n_reps=20, test=c("PS(A)",
   # DS(A)
   if (any(test=="DS(A)")) {
     # fit restricted model
-    restricted[["DS(A)"]] <- grt_wind_fit_parallel(cmats, start_params = fitted_model$fullpars, model="DS(A)", n_reps=n_reps)
+    restricted[["DS(A)"]] <- grt_wind_fit_parallel(cmats, start_params = fitted_model$fullpars, model=c("DS(A)",fitted_model$restrictions), n_reps=n_reps)
     
     # run likelihood ratio test
     Chi2 <- 2*(-fitted_model$value + restricted[["DS(A)"]]$value)
@@ -155,7 +156,7 @@ lr_test.grt_wind_fit <- function(fitted_model, cmats, n_reps=20, test=c("PS(A)",
   # DS(B)
   if (any(test=="DS(B)")) {
     # fit restricted model
-    restricted[["DS(B)"]] <- grt_wind_fit_parallel(cmats, start_params = fitted_model$fullpars, model="DS(B)", n_reps=n_reps)
+    restricted[["DS(B)"]] <- grt_wind_fit_parallel(cmats, start_params = fitted_model$fullpars, model=c("DS(B)",fitted_model$restrictions), n_reps=n_reps)
     
     # run likelihood ratio test
     Chi2 <- 2*(-fitted_model$value + restricted[["DS(B)"]]$value)

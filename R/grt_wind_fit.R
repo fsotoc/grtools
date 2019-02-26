@@ -9,12 +9,14 @@
 #'   optimization algorithm. You can provide either the group parameters or both
 #'   group and individual parameters. It will be created automatically if not
 #'   provided (see Details).
-#' @param model A string indicating what GRT-wIND model to run. By default is the
-#' full model ("full"), but restricted models are also available. "PS(A)" and "PS(B)"
-#' are models that assume PS for dimension A and dimension B, respectively. "PI" is
-#' a model that assumes perceptual independence.  "DS(A)" and "DS(B)" are models
-#' that assume DS for dimension A ("PS(A)") and dimension B ("PS(B)"), respectively.
-#' "1-VAR" is a model that assumes that all variances are equal to one.
+#' @param model A string or vector of strings indicating what GRT-wIND model to run. 
+#' By default is the full model ("full"), but restricted models can be obtained by 
+#' combination of several string values. "PS(A)" and "PS(B)" are models that assume 
+#' PS for dimension A and dimension B, respectively. "PI" is a model that assumes 
+#' perceptual independence.  "DS(A)" and "DS(B)" are models that assume DS for dimension 
+#' A and dimension B, respectively. "1-VAR" is a model that assumes that all variances 
+#' are equal to one. A model assuming PS for dimension A and that all variances are 
+#' equal to one would require setting model=c("PS(A)", "1-VAR").
 #' @param rand_pert Maximum value of a random perturbation added to the starting
 #'   parameters. With a value of zero, the algorithm is started exactly at
 #'   \code{start_params}. As the value of \code{rand_pert} is increased, the starting
@@ -218,52 +220,52 @@ grt_wind_fit <- function(cmats, start_params=c(), model="full", rand_pert=0.3, c
   fixed[10] <- 10
   
   # PS(A)
-  if (model=="PS(A)"){
+  if (any(model=="PS(A)")){
     # fix means along x axis
     fixed[5] <- 1
     fixed[7] <- 3
     # fix variances along x axis
     fixed[15] <- 9
     fixed[18] <- 12
-    
+  }
   # PS(B)
-  } else if (model=="PS(B)"){
+  if (any(model=="PS(B)")){
     # fix means along y axis
     fixed[4] <- 2
     fixed[8] <- 6
     # fix variances along y axis
     fixed[13] <- 10
     fixed[19] <- 16
-    
+  } 
   # PI
-  } else if (model=="PI") {
+  if (any(model=="PI")) {
     # make sure that the starting value of correlations is zero
     start_params[c(11, 14, 17, 20)] <- 0
     # set value of correlations to starting value
     fixed[c(11, 14, 17, 20)] <- c(11, 14, 17, 20)
-    
+  } 
   # DS(A)
-  } else if (model=="DS(A)"){
+  if (any(model=="DS(A)")){
     for (i in 1:N){
       # make sure that the starting bound is orthogonal
       start_params[20+(i-1)*6+3] <- 0
       # set value of the bound slope to starting value
       fixed[20+(i-1)*6+3] <- 20+(i-1)*6+3
     }
-    
+  } 
   # DS(B)
-  } else if (model=="DS(B)"){
+  if (any(model=="DS(B)")){
     for (i in 1:N){
       # make sure that the starting bound is orthogonal
       start_params[20+(i-1)*6+5] <- 0
       # set value of the bound slope to starting value
       fixed[20+(i-1)*6+5] <- 20+(i-1)*6+5
     }
-    
+  } 
   # 1-VAR
-  } else if (model=="1-VAR"){
+  if (any(model=="1-VAR")){
     # make sure that all starting variances are equal to one
-    start_params[c(9,10,12,13,15,16,18,19)]
+    start_params[c(9,10,12,13,15,16,18,19)] <- 1
     # set value of variances to starting value
     fixed[c(9,10,12,13,15,16,18,19)] <- c(9,10,12,13,15,16,18,19)
   }
@@ -334,7 +336,8 @@ grt_wind_fit <- function(cmats, start_params=c(), model="full", rand_pert=0.3, c
   class(results) <- "grt_wind_fit"
   
   results$N <- N
-  results$model <- paste("GRT-wIND_", model, sep="")
+  results$model <- "GRT-wIND"
+  results$restrictions <- model
   results$predicted <- fitted(results)
   results$observed <- c()
   
