@@ -34,7 +34,8 @@ data and the results of likelihood ratio tests.
 Run likelihood ratio tests of perceptual separability, decisional separability,
 and perceptual independence (see Ashby & Soto, 2015), using the
 maximum likelihood parameter estimates stored in a \code{grt_wind_fit}
-object.
+object. The method considers any restrictions placed in the original model
+and stored in \code{grt_wind_fit$restrictions}.
 }
 \details{
 Each likelihood ratio test involves fitting a restricted model to the
@@ -79,4 +80,3 @@ Ashby, F. G., & Soto, F. A. (2015). Multidimensional signal
   Eidels (Eds.), \emph{Oxford handbook of computational and mathematical
   psychology} (pp. 13-34). Oxford University Press: New York, NY.
 }
-
