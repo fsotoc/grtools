@@ -117,7 +117,7 @@ sumstats_micro <- function(cmat, use_kadlec=T) {
   micro$equal_conditional_d_prime <- econdprime(cmat)
   
   # equal conditional c
-  micro$equal_conditional_c <- econdc(cmat)
+  micro$equal_conditional_c <- econdc(cmat, use_kadlec=use_kadlec)
   
 
   # return object of class "sumstats_micro"
