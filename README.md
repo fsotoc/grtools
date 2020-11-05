@@ -21,7 +21,7 @@ Of course, you will need R, which you can download [here](http://cran.rstudio.co
 ## 1. Installing pre-requisites
 **grtools** requires [Rcpp](http://cran.r-project.org/web/packages/Rcpp/index.html) to work, which in turn requires a development environment with a suitable compiler. If you already have this, go to step 2.
 
-If you do not have a C++ compiler installed, see the [Rcpp FAQ](http://cran.r-project.org/web/packages/Rcpp/vignettes/Rcpp-FAQ.pdf), particularly points 1.2 and 1.3. More detailed instructions on how to install the compiler can be found [here](https://github.com/stan-dev/rstan/wiki/RStan-Mac-OS-X-Prerequisite-Installation-Instructions) for Mac OS X (this page belongs to a different project that uses the same pre-requisites as grtools; please ignore instructions to install RStan), and [here](https://github.com/stan-dev/rstan/wiki/Install-Rtools-for-Windows) for Windows.
+If you do not have a C++ compiler installed, see the [Rcpp FAQ](http://cran.r-project.org/web/packages/Rcpp/vignettes/Rcpp-FAQ.pdf), particularly points 1.2 and 1.3. More detailed instructions on how to install the compiler can be found [here](https://thecoatlessprofessor.com/programming/cpp/r-compiler-tools-for-rcpp-on-macos/) for Mac OS X, and [here](https://cran.r-project.org/bin/windows/Rtools/) for Windows.
 
 
 ## 2. Installing grtools
