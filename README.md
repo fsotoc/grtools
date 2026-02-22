@@ -7,6 +7,8 @@
 2. Model-based analyses of separability and independence with traditional GRT models for the 2x2 identification experiment (Ashby & Soto, 2015).
 3. Summary statistics analysis (i.e. Kadlec's MSDA; see Kadlec & Townsend, 1992) for the 2x2 identification experiment.
 4. Summary statistics analysis for the 2x2 Garner filtering task (Ashby & Maddox, 1994).
+5. Parametric bootstrap sampling and confidence intervals for fitted GRT-wIND models (see `bootstrap_sample` and `confidence_interval`; Soto et al., 2021).
+6. Sensitivity-versus-awareness and sensitivity-versus-metacognition curves for fitted GRTapas models (see `sva_curve`, with `curve = "SvA"` or `curve = "SvM"`; Pournaghdali et al., 2023).
 
 A tutorial introduction to GRT analyses using **grtools** can be found in [this *Frontiers In Psychology* paper](http://journal.frontiersin.org/article/10.3389/fpsyg.2017.00696/full). Please use the following reference when you report analyses performed using **grtools**:
 
@@ -41,6 +43,37 @@ library(grtools)
 
 This will open a document that includes links to help documentation for each of the main analyses included in **grtools** (including examples). Sometimes the command ```?grtools``` produces an error instead of displaying the documentation. Simply quitting and re-opening R typically solves this problem.
 
+## New Functionality
+
+### Bootstrap sampling and confidence intervals
+For fitted GRT-wIND models, bootstrap sampling can be obtained with:
+
+```R
+bootstrap_samples <- bootstrap_sample(fitted_model, N_rows = lapply(cmats, rowSums), N = 100, n_cores = 1)
+bootstrap_samples$cis
+```
+
+Confidence intervals can also be computed directly from a sample matrix using:
+
+```R
+confidence_interval(input_matrix, alpha = 0.05)
+```
+
+### SvA and SvM curves for GRTapas
+For fitted GRTapas models:
+
+```R
+# Group-level SvA (default)
+sva_curve(fitted_model, bootstrap_samples)
+
+# Group-level SvM
+sva_curve(fitted_model, bootstrap_samples, curve = "SvM")
+
+# Individual-level SvA or SvM
+sva_curve(fitted_model, bootstrap_samples, sub = 1)
+sva_curve(fitted_model, bootstrap_samples, sub = 1, curve = "SvM")
+```
+
 
 References
 ----------
@@ -54,3 +87,7 @@ Kadlec, H., & Townsend, J. T. (1992). Signal detection analyses of multidimensio
 Soto, F. A., Musgrave, R., Vucovich, L., & Ashby, F. G. (2015). General recognition theory with individual differences: A new method for examining perceptual and decisional interactions with an application to face perception. *Psychonomic Bulletin & Review, 22*(1), 88-111.
 
 Soto, F. A., Zheng, E., & Ashby, F. G. (2017). Testing separability and independence of perceptual dimensions with general recognition theory: A tutorial and new R package (grtools). *Frontiers in Psychology, 8*:696.
+
+Soto, F. A., Stewart, R. A., Hosseini, S., Hays, J., & Beevers, C. G. (2021). A computational account of the mechanisms underlying face perception biases in depression. *Journal of Abnormal Psychology, 130*(5), 443.
+
+Pournaghdali, A., Schwartz, B. L., Hays, J., & Soto, F. A. (2023). Sensitivity vs. awareness curve: A novel model-based analysis to uncover the processes underlying nonconscious perception. *Psychonomic Bulletin & Review, 30*(2), 553-563.
