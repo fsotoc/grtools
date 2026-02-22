@@ -3,7 +3,7 @@
 \alias{grtools}
 \docType{package}
 \title{
-General recognition theory tools for the analysis of perceptual independence
+General Recognition Theory Tools for the Analysis of Perceptual Independence
 }
 \description{
 Statistical tools from General Recognition Theory for psychophysical data analyses aimed at determining independent processing of perceptual dimensions
@@ -12,8 +12,8 @@ Statistical tools from General Recognition Theory for psychophysical data analys
 \tabular{ll}{
 Package: \tab grtools\cr
 Type: \tab Package\cr
-Version: \tab 0.2.0\cr
-Date: \tab 2016-09-28\cr
+Version: \tab 0.3.1\cr
+Date: \tab 2026-02-22\cr
 License: \tab GPL (>= 2)\cr
 }
 \code{grtools} provides functions for the following analyses using general recognition theory:
@@ -43,9 +43,7 @@ Soto, F. A., Musgrave, R., Vucovich, L., & Ashby, F. G. (2015). General recognit
   
 }
 
-\keyword{ package, general recognition theory, grt, mdsdt, signal detection theory, 
-perceptual separability, perceptual independence, separability }
+\keyword{package}
 \seealso{
-For applications of General Recognition Theory to perceptual categorization experiments, see \code{\href{http://cran.r-project.org/web/packages/grt/index.html}{grt}
-}
+For applications of General Recognition Theory to perceptual categorization experiments, see \href{https://CRAN.R-project.org/package=grt}{grt}.
 }

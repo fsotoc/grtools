@@ -8,6 +8,27 @@ optifix(par, fixed, fn, gr = NULL, ..., method = c("Nelder-Mead", "BFGS",
   "CG", "L-BFGS-B", "SANN"), lower = -Inf, upper = Inf, control = list(),
   hessian = FALSE)
 }
+\arguments{
+\item{par}{Initial values for the parameters to optimize.}
+
+\item{fixed}{Numeric vector specifying which parameters are fixed.}
+
+\item{fn}{Objective function to be minimized.}
+
+\item{gr}{Optional gradient function.}
+
+\item{\dots}{Additional arguments passed to \code{fn} and \code{gr}.}
+
+\item{method}{Optimization method.}
+
+\item{lower}{Lower bounds for \code{"L-BFGS-B"} method.}
+
+\item{upper}{Upper bounds for \code{"L-BFGS-B"} method.}
+
+\item{control}{List of control parameters passed to \code{\link[stats]{optim}}.}
+
+\item{hessian}{Logical indicating whether to compute the Hessian.}
+}
 \description{
 its like optim, but with fixed parameters.
 }
@@ -32,4 +53,3 @@ under a CC By-SA license: http://creativecommons.org/licenses/by-sa/3.0/
 Any use of this script must retain the text: 
 "Originally written by Barry Rowlingson" in comments.
 }
-

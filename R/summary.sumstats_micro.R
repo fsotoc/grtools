@@ -1,5 +1,6 @@
 #' @export
-summary.sumstats_micro <- function(micro){
+summary.sumstats_micro <- function(object, ...){
+  micro <- object
   
   # summary for macroanalyses
   # code for conclusions

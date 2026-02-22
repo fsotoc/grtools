@@ -1,5 +1,6 @@
 #' @export
-summary.sumstats_garner <- function(ssg_list){
+summary.sumstats_garner <- function(object, ...){
+  ssg_list <- object
   
   # summary
   sep <- c("NO", "NO")

@@ -4,24 +4,26 @@
 \alias{lr_test}
 \title{Run likelihood ratio tests of separability and independence}
 \usage{
-lr_test(fitted_model, cmats, n_reps=20, test=c("PS(A)", "PS(B)", "PI", "DS(A)", "DS(B)"))
+lr_test(x, ...)
 }
 \arguments{
-\item{fitted_model}{An object returned by \code{\link{grt_wind_fit}} or 
+\item{x}{An object returned by \code{\link{grt_wind_fit}} or
 \code{\link{grt_wind_fit_parallel}}}
 
-\item{cmats}{List of confusion matrices. Each entry in the list should contain
+\item{\dots}{Additional arguments passed to methods. For
+\code{lr_test.grt_wind_fit}, these include:
+\itemize{
+\item \code{cmats}: list of confusion matrices. Each entry in the list should contain
 the 4x4 confusion matrix from one individual. For a detailed description of
-how to create this list, see \code{\link{grt_wind_fit}}}
-
-\item{n_reps}{Number of times the optimization algorithm should be run when
-a restricted model is fitted to the data (see Details).}
-
-\item{test}{A string array indicating the test(s) to be performed. "PS(A)" and
+how to create this list, see \code{\link{grt_wind_fit}}.
+\item \code{n_reps}: number of times the optimization algorithm should be run when
+a restricted model is fitted to the data (see Details).
+\item \code{test}: a string array indicating the test(s) to be performed. "PS(A)" and
 "PS(B)" indicate to test perceptual separability of A and B, respectively. "PI"
 indicates to test perceptual independence. "DS(A)" and "DS(B)" indicate to test
 decisional separability of A and B, respectively. The default is test=c("PS(A)",
 "PS(B)", "PI", "DS(A)", "DS(B)"), which includes all tests.}
+}
 }
 \value{
 An object of class "\code{grt_wind_fit}," including information about
@@ -67,8 +69,10 @@ cmats[[5]] <- matrix(c(169,53,53,25,34,168,69,29,38,48,180,34,19,44,60,177),nrow
 # fit the model to data
 fitted_model <- grt_wind_fit(cmats)
 
-#' # run the likelihood ratio tests
+# run the likelihood ratio tests
+\dontrun{
 fitted_model <- lr_test(fitted_model, cmats)
+}
 
 # see the results
 summary(fitted_model)

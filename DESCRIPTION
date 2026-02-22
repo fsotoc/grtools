@@ -1,19 +1,26 @@
 Package: grtools
 Type: Package
-Title: General Recognition Theory tools for the analysis of perceptual
-    independence
+Title: General Recognition Theory Tools for the Analysis of Perceptual
+    Independence
 Version: 0.3.1
-Date: 2019-02-26
-Author: Fabian Soto, Emily Zheng
+Date: 2026-02-22
+Authors@R: c(
+    person(given = "Fabian", family = "Soto", role = c("aut", "cre"),
+      email = "fasoto@fiu.edu"),
+    person(given = "Emily", family = "Zheng", role = "aut")
+    )
 Maintainer: Fabian Soto <fasoto@fiu.edu>
 Description: Statistical tools from General Recognition Theory for
     psychophysical data analyses aimed at determining independent processing of
     perceptual dimensions.
 License: GPL (>= 2)
+Depends:
+    R (>= 2.10)
 Imports:
     Rcpp (>= 0.11.2),
     numDeriv
 Suggests:
     MASS
 LinkingTo: Rcpp
-RoxygenNote: 5.0.1
+RoxygenNote: 6.1.1
+Encoding: UTF-8

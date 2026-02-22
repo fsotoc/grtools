@@ -1,5 +1,6 @@
 #' @export
-summary.grt_wind_fit <- function(fitted_model) {
+summary.grt_wind_fit <- function(object, ...) {
+  fitted_model <- object
 
   if (fitted_model$convergence==0){
     cat("The optimization algorithm was successful\n\n")

@@ -71,7 +71,8 @@
 lr_test <- function(x, ...) UseMethod("lr_test")
 
 #' @export
-lr_test.grt_wind_fit <- function(fitted_model, cmats, n_reps=20, test=c("PS(A)", "PS(B)", "PI", "DS(A)", "DS(B)")){
+lr_test.grt_wind_fit <- function(x, cmats, n_reps=20, test=c("PS(A)", "PS(B)", "PI", "DS(A)", "DS(B)"), ...){
+  fitted_model <- x
   
   restricted <- list()
   lr_test <- data.frame()

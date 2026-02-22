@@ -2,7 +2,8 @@
 data_sample <- function(x, ...) UseMethod("data_sample")
 
 #' @export
-data_sample.grt_wind_fit <- function(model, N_row){
+data_sample.grt_wind_fit <- function(x, N_row, ...){
+  model <- x
   # samples a list of confusion matrices from a grt-wind model
   # model is a list either obtained directly from grt_wind_fit, or created manually
   # and declared of class "grt_wind_fit". See the function grt_wind_fit to look
@@ -20,7 +21,7 @@ data_sample.grt_wind_fit <- function(model, N_row){
   cmats <- list()
   for (sub in 1:model$N){
     # if a list of N_rows was provided, get value for this participant
-    if (class(N_row)=="list"){
+    if (is.list(N_row)){
       nr <- N_row[[sub]]
     } else {
       nr <- N_row

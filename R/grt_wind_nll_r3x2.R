@@ -1,6 +1,6 @@
 #' @importFrom Rcpp evalCpp
 #' @useDynLib grtools
-grt_wind_nll <- function(data, params){
+grt_wind_nll_r3x2 <- function(data,params){
   
    N <- length(data)
    L <- 0
@@ -14,8 +14,8 @@ grt_wind_nll <- function(data, params){
    for (sub in 1:N){
      
      # get individual attention parameters
-     kap = params[20+(sub-1)*6+1]
-     lam1 = params[20+(sub-1)*6+2]
+     kap = params[20+(sub-1)*8+1]
+     lam1 = params[20+(sub-1)*8+2]
      lam2 = 1-lam1
           
      # scale the covariance matrices for this subject
@@ -36,11 +36,15 @@ grt_wind_nll <- function(data, params){
                            2,2,byrow=TRUE)
      
      # get decision bound parameters for this subject
-     b <- matrix(c(1, params[20+(sub-1)*6+3], params[20+(sub-1)*6+5], 1),
-                  2,2,byrow=TRUE)
-     c <- matrix(c(params[20+(sub-1)*6+4], params[20+(sub-1)*6+6]),2,1)
+     b <- matrix(c(1, params[20+(sub-1)*8+3],
+                   1, params[20+(sub-1)*8+5],
+                   params[20+(sub-1)*8+7], 1),
+                  3,2, byrow=TRUE)
+     c <- matrix(c(params[20+(sub-1)*8+4], 
+                   params[20+(sub-1)*8+6],
+                   params[20+(sub-1)*8+8]),3,1)
      
-     L <- L + matrixloglikC(data[[sub]],means,covmat,b,c)
+     L <- L + matrixloglikC_r3x2(data[[sub]],means,covmat,b,c)
      
    }
 

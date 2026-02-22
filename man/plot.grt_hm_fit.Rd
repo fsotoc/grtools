@@ -4,17 +4,18 @@
 \alias{plot.grt_hm_fit}
 \title{Plot a \code{grt_hm_fit} object}
 \usage{
-\method{plot}{grt_hm_fit}(model, labels = c("dim A", "dim B"),
-  ellipse_width = 0.8)
+\method{plot}{grt_hm_fit}(x, labels = c("dim A", "dim B"),
+  ellipse_width = 0.8, ...)
 }
 \arguments{
-\item{model}{A \code{grt_hm_fit} object}
+\item{x}{A \code{grt_hm_fit} object}
 
 \item{labels}{Optional names for the labels of dimensions A and B}
 
 \item{ellipse_width}{Parameter controlling the width of the drawn ellipses}
+
+\item{\dots}{Unused.}
 }
 \description{
 Plot the object returned by \code{\link{grt_hm_fit}}
 }
-

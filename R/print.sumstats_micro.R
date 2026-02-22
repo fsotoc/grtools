@@ -1,5 +1,5 @@
 #' @export
-print.sumstats_micro <- function(x){
+print.sumstats_micro <- function(x, ...){
   cat("Test of sampling independence:\n\n")
   x$sampling_independence$Expected_p <- round(as.numeric(x$sampling_independence$Expected_p),2)
   x$sampling_independence$Observed_p <- round(as.numeric(x$sampling_independence$Observed_p),2)

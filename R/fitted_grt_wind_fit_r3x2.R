@@ -1,17 +1,10 @@
 #' @export
-fitted.grt_wind_fit <- function(object, out_format="vector", ...){
-  model <- object
+fitted_grt_wind_fit_r3x2 <- function(model, out_format="vector"){
   # input (model) is a list obtained from grt_wind_fit
   # out_format determines the format of the output; "vector" returns
   # a vector of predicted response probabilities; "list" returns
   # a list of confusion probability matrices (one per participant)
-   
-   # if this is a model with 3 response categories for dimension A (e.g., 
-   # type-2 analysis in GRTapas), call the appropriate function and return value
-   if (any(model$restrictions=="r3x2")){
-     return(fitted_grt_wind_fit_r3x2(model, out_format=out_format))
-   }
-   
+  
    N <- model$N
    predicted <- c()
    
@@ -24,8 +17,8 @@ fitted.grt_wind_fit <- function(object, out_format="vector", ...){
    for (sub in 1:N){
      
      # get individual attention parameters
-     kap = model$fullpars[20+(sub-1)*6+1]
-     lam1 = model$fullpars[20+(sub-1)*6+2]
+     kap = model$fullpars[20+(sub-1)*8+1]
+     lam1 = model$fullpars[20+(sub-1)*8+2]
      lam2 = 1-lam1
           
      # scale the covariance matrices for this subject
@@ -46,14 +39,18 @@ fitted.grt_wind_fit <- function(object, out_format="vector", ...){
                            2,2,byrow=TRUE)
      
      # get decision bound parameters for this subject
-     b <- matrix(c(1, model$fullpars[20+(sub-1)*6+3], model$fullpars[20+(sub-1)*6+5], 1),
-                  2,2,byrow=TRUE)
-     c <- matrix(c(model$fullpars[20+(sub-1)*6+4], model$fullpars[20+(sub-1)*6+6]),2,1)
+     b <- matrix(c(1, model$fullpars[20+(sub-1)*8+3], 
+                   1, model$fullpars[20+(sub-1)*8+5],
+                   model$fullpars[20+(sub-1)*8+7], 1),
+                  3,2,byrow=TRUE)
+     c <- matrix(c(model$fullpars[20+(sub-1)*8+4],
+                   model$fullpars[20+(sub-1)*8+6],
+                   model$fullpars[20+(sub-1)*8+8]),3,1)
      
      if (out_format=="vector"){
        tryCatch(
          {
-         predicted <- c(predicted, as.vector(matrix_predict(means,covmat,b,c)))
+         predicted <- c(predicted, as.vector(matrix_predict_r3x2(means,covmat,b,c)))
          },
          error=function(e) {
            warning("The fitted GRT-wIND model could not produce predictions")
@@ -61,7 +58,7 @@ fitted.grt_wind_fit <- function(object, out_format="vector", ...){
            }
          )
        } else if (out_format=="list"){
-       predicted <- c(predicted, list(matrix_predict(means,covmat,b,c)))
+       predicted <- c(predicted, list(matrix_predict_r3x2(means,covmat,b,c)))
      }
    }
 

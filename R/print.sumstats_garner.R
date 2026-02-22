@@ -1,5 +1,5 @@
 #' @export
-print.sumstats_garner <- function(x){
+print.sumstats_garner <- function(x, ...){
   
   cat("Garner interference test:\n\n")
   x$garner_interference$Baseline <- round(as.numeric(x$garner_interference$Baseline), 2)

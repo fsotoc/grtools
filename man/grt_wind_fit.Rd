@@ -4,7 +4,7 @@
 \alias{grt_wind_fit}
 \title{Fit a GRT-wIND model to identification data}
 \usage{
-grt_wind_fit(cmats, start_params = c(), model = "full",
+grt_wind_fit(cmats, start_params = c(), model = "1-VAR",
   rand_pert = 0.3, control = list())
 }
 \arguments{
@@ -71,10 +71,16 @@ The data from a single participant in the experiment should be ordered in a
 responses. Each cell has the frequency of responses for the stimulus/response
 pair. Rows and columns should be ordered in the following way:
 
-\itemize{ \item{Row 1: Stimulus A1B1} \item{Row 2: Stimulus A2B1} 
-\item{Row 3: Stimulus A1B2} \item{Row 4: Stimulus A2B2} \item{Column
-1: Response a1b1} \item{Column 2: Response a2b1} \item{Column 3: Response a1b2} 
-\item{Column 4: Response a2b2} }
+\itemize{
+\item Row 1: Stimulus A1B1
+\item Row 2: Stimulus A2B1
+\item Row 3: Stimulus A1B2
+\item Row 4: Stimulus A2B2
+\item Column 1: Response a1b1
+\item Column 2: Response a2b1
+\item Column 3: Response a1b2
+\item Column 4: Response a2b2
+}
 
 The argument \code{cmats} is a list with all individual confusion matrices
 from an experimental group.
@@ -82,12 +88,11 @@ from an experimental group.
 If the value of \code{start_params} is not provided, the starting parameters
 for the optimization algorithm are the following: 
 \itemize{ 
-\item{Means:}{ A1B1=(0,0), A2B1=(1,0), A1B2=(1,0), A2B1=(1,1)} 
-\item{Variances:}{ All set to one} 
-\item{Correlations:}{ All set to zero} 
-\item{Decision bounds:}{ All orthogonal to their corresponding dimension} 
-\item{Attention parameters:}{ No differences in global attention (kappa=2) and no 
-selective attention (lambda=0.5)}
+\item Means: A1B1=(0,0), A2B1=(1,0), A1B2=(1,0), A2B1=(1,1)
+\item Variances: all set to one
+\item Correlations: all set to zero
+\item Decision bounds: all orthogonal to their corresponding dimension
+\item Attention parameters: no differences in global attention (kappa=2) and no selective attention (lambda=0.5)
 }
 
 Note that a random value will be added to these parameters if
@@ -111,11 +116,15 @@ plot(fitted_model)
 
 # optionally, you can run likelihood ratio tests of separability and independence
 # (recommended method, but very slow)
+\dontrun{
 fitted_model <- lr_test(fitted_model, cmats)
+}
 
 # alternatively, you can run a Wald test of separability and independence 
 # (less recommended method, due to common problems with numerical estimation, but faster)
+\dontrun{
 fitted_model <- wald(fitted_model, cmats)
+}
 
 # print a summary of the fitted model and tests to screen
 summary(fitted_model)

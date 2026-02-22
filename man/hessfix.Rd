@@ -6,8 +6,18 @@
 \usage{
 hessfix(par, fixed, fn, ..., method.args = list())
 }
+\arguments{
+\item{par}{Numeric vector of parameter values.}
+
+\item{fixed}{Numeric vector specifying which parameters are fixed.}
+
+\item{fn}{Objective function used for optimization.}
+
+\item{\dots}{Additional arguments passed to \code{fn}.}
+
+\item{method.args}{List of arguments controlling numerical Hessian estimation.}
+}
 \description{
 specify an argument 'fixed', a vector of numerical values.
 created just as in function optifix
 }
-

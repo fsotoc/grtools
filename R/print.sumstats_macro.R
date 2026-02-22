@@ -1,5 +1,5 @@
 #' @export
-print.sumstats_macro <- function(x){
+print.sumstats_macro <- function(x, ...){
   cat("Test of marginal response invariance:\n")
   x$marginal_response_invariance$z <- round(as.numeric(x$marginal_response_invariance$z),2)
   x$marginal_response_invariance$p_value <- round(as.numeric(x$marginal_response_invariance$p_value),5)

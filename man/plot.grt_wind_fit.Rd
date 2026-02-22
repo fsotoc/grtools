@@ -4,17 +4,33 @@
 \alias{plot.grt_wind_fit}
 \title{Plot a \code{grt_wind_fit} object}
 \usage{
-\method{plot}{grt_wind_fit}(model, labels = c("dim A", "dim B"),
-  ellipse_width = 0.8)
+\method{plot}{grt_wind_fit}(x, labels = c("dim A", "dim B"),
+  ellipse_width = 0.8, bounds = NA, color_plot = TRUE,
+  solid_margs = TRUE, cols = c("darkred", "darkgreen", "darkblue",
+  "darkorange"), ...)
 }
 \arguments{
-\item{model}{A \code{grt_wind_fit} object}
+\item{x}{A \code{grt_wind_fit} object}
 
 \item{labels}{Optional names for the labels of dimensions A and B}
 
 \item{ellipse_width}{Parameter controlling the width of the drawn ellipses}
+
+\item{bounds}{Parameter indicating what decisional bounds to plot. If logical
+TRUE, it plots all available bounds. If a numeric vector, it plots bounds for
+the indicated participant indexes (for example, \code{bounds = c(1, 4, 13)}). By
+default no bounds are plotted.}
+
+\item{color_plot}{Logical value indicating whether to plot in color (TRUE by
+default).}
+
+\item{solid_margs}{Logical value indicating whether marginals should be all
+solid (TRUE by default) or dotted depending on level of second dimension.}
+
+\item{cols}{Colors to use in the plot.}
+
+\item{\dots}{Unused.}
 }
 \description{
 Plot the object returned by \code{\link{grt_wind_fit}}
 }
-

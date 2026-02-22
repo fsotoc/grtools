@@ -52,15 +52,24 @@ The data from a single participant in the experiment should be ordered in a
 responses. Each cell has the frequency of responses for the stimulus/response
 pair. Rows and columns should be ordered in the following way:
 
-\itemize{ \item{Row 1: Stimulus A1B1} \item{Row 2: Stimulus A2B1} 
-\item{Row 3: Stimulus A1B2} \item{Row 4: Stimulus A2B2} \item{Column
-1: Response a1b1} \item{Column 2: Response a2b1} \item{Column 3: Response a1b2} 
-\item{Column 4: Response a2b2} }
+\itemize{
+\item Row 1: Stimulus A1B1
+\item Row 2: Stimulus A2B1
+\item Row 3: Stimulus A1B2
+\item Row 4: Stimulus A2B2
+\item Column 1: Response a1b1
+\item Column 2: Response a2b1
+\item Column 3: Response a1b2
+\item Column 4: Response a2b2
+}
 
 The default starting parameters for the optimization algorithm are the
-following: \itemize{ \item{Means:}{ A1B1=(0,0), A2B1=(1,0), A1B2=(1,0),
-A2B1=(1,1)} \item{Variances:}{ All set to one} \item{Correlations:}{ All set
-to zero} }
+following:
+\itemize{
+\item Means: A1B1=(0,0), A2B1=(1,0), A1B2=(1,0), A2B1=(1,1)
+\item Variances: all set to one
+\item Correlations: all set to zero
+}
 
 Decisional separability is assumed for all models (i.e., decision bounds are
 fixed and orthogonal to the dimension they divide)
@@ -94,4 +103,3 @@ Ashby, F. G., & Soto, F. A. (2015). Multidimensional signal
   Eidels (Eds.), \emph{Oxford handbook of computational and mathematical
   psychology} (pp. 13-34). Oxford University Press: New York, NY.
 }
-

@@ -24,14 +24,24 @@ grt_wind_fit_parallel <- function(cmats, start_params=c(), model="full", rand_pe
                                   control=list(),
                                   n_reps, n_cores=0) {
   
+  if (missing(n_reps) || length(n_reps) != 1 || is.na(n_reps) || n_reps < 1) {
+    stop("'n_reps' must be a positive integer")
+  }
+  n_reps <- as.integer(n_reps)
   
   # Calculate the number of available cores
   available_cores <- parallel::detectCores()
+  if (is.na(available_cores) || available_cores < 2) {
+    available_cores <- 2
+  }
   
   # if the number of cores was not provided or the user asked for more
   # cores than the available number, then use available minus one
   if ( n_cores == 0 || n_cores > available_cores ) {
     n_cores <- available_cores - 1
+  }
+  if (n_cores < 1 || is.na(n_cores)) {
+    n_cores <- 1
   }
   
   # if the number of repetitions is less than the number of cores, set the latter to the former

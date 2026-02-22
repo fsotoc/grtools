@@ -1,0 +1,10 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^\.git$
+^\.gitignore$
+^\.Rhistory$
+^R/\.Rhistory$
+^R/\.RData$
+^R/.*\.cpp$
+^src/.*\.(o|so)$
+^src/symbols\.rds$

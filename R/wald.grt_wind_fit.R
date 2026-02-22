@@ -50,7 +50,8 @@
 wald <- function(x, ...) UseMethod("wald")
 
 #' @export
-wald.grt_wind_fit <- function(fitted_model, cmats, estimate_hess=T){
+wald.grt_wind_fit <- function(x, cmats, estimate_hess=T, ...){
+  fitted_model <- x
   
   # only run Wald test if a full GRT-wIND model is provided
   if (fitted_model$model!="GRT-wIND_full") {
@@ -208,5 +209,4 @@ wald.grt_wind_fit <- function(fitted_model, cmats, estimate_hess=T){
   return(fitted_model)
   
 }
-
 

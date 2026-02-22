@@ -88,7 +88,8 @@ grt_hm_fit <- function(cmat, rand_pert=0.3, n_reps=10, control=list()){
   fitted_models <- fit_grt_models(cmat, rand_pert=rand_pert, n_reps=n_reps, control=control)
   
   # order all models according to AIC
-  o_aic <- order_aic(fitted_models)
+  model_names <- c("{PI, PS, DS}", "{PI, PS(A), DS}", "{PI, PS(B), DS}", "{1_RHO, PS, DS}", "{1_RHO, PS(A), DS}", "{PI, DS}", "{1_RHO, PS(B), DS}", "{PS, DS}", "{PS(A), DS}", "{1_RHO, DS}", "{PS(B), DS}", "{DS}")
+  o_aic <- order_aic(fitted_models, model_names, n_data = 16)
   
   # put together a list with best-model parameters for output
   best_model <- list()
@@ -507,28 +508,3 @@ fit_grt_models <- function(cmat, rand_pert=0, n_reps=1, control=control){
   return(fitted_models)
 }
 
-
-##############################################
-# Function that computes AIC and ranks models according to it:
-
-order_aic <-function(fitted_models) {
-  aic_list <- rep(0,12)
-  L <- rep(0,12)
-  model <- c("{PI, PS, DS}", "{PI, PS(A), DS}", "{PI, PS(B), DS}", "{1_RHO, PS, DS}", "{1_RHO, PS(A), DS}", "{PI, DS}", "{1_RHO, PS(B), DS}", "{PS, DS}", "{PS(A), DS}", "{1_RHO, DS}", "{PS(B), DS}", "{DS}")
-  for(i in 1:12){
-    L[i] <- -fitted_models[[i]]$value
-    m <- length(fitted_models[[i]]$par)
-    aic_list[i] <- -2*L[i]+2*m+(2*m^2+2*m)/(16-m-1)
-  }
-  
-  aic_exp <- rep(0,12)    
-  aic_weight <- rep(0,12)
-  aic_exp <- exp(-(aic_list-min(aic_list))/2)
-  aic_weight <- aic_exp/sum(aic_exp)
-  
-  ordered_aic <- data.frame(model,L,aic_list,aic_weight)
-  colnames(ordered_aic) <- c("model","log-likelihood", "AIC", "AIC weight")
-  ordered_aic <- ordered_aic[order(-aic_weight),]
-  ordered_aic[4] <- prettyNum(round(ordered_aic[4], digits=3)[[1]], nsmall=2)
-  return(ordered_aic)
-}

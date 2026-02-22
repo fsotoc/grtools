@@ -6,7 +6,7 @@ wald_test <- function(R, q, w, covmat){
   dv_covmat <- R%*%covmat%*%t(R)
   dv_infmat <- solve(dv_covmat)
   if (any(is.infinite(dv_infmat))){
-    dv_infmat <- MASS:::ginv(dv_covmat)  # if inversion failed, use P-M pseudoinverse (requires package MASS)
+    dv_infmat <- MASS::ginv(dv_covmat)  # if inversion failed, use P-M pseudoinverse (requires package MASS)
   }
   
   

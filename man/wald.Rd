@@ -4,19 +4,22 @@
 \alias{wald}
 \title{Run Wald tests of separability and independence}
 \usage{
-wald(fitted_model, cmats, estimate_hess=T)
+wald(x, ...)
 }
 \arguments{
-\item{fitted_model}{An object returned by \code{\link{grt_wind_fit}}}
+\item{x}{An object returned by \code{\link{grt_wind_fit}}}
 
-\item{cmats}{List of confusion matrices. Each entry in the list should contain
+\item{\dots}{Additional arguments passed to methods. For
+\code{wald.grt_wind_fit}, these include:
+\itemize{
+\item \code{cmats}: list of confusion matrices. Each entry in the list should contain
 the 4x4 confusion matrix from one individual. For a detailed description of
-how to create this list, see \code{\link{grt_wind_fit}}}
-
-\item{estimate_hess}{Indicates whether a numerical estimate of the Hessian
+how to create this list, see \code{\link{grt_wind_fit}}.
+\item \code{estimate_hess}: indicates whether a numerical estimate of the Hessian
 should be obtained. If an estimate has been previously obtained and is
 stored in \code{fitted_model}, setting \code{estimate_hess=F} will save
 computing time.}
+}
 }
 \value{
 An object of class "\code{grt_wind_fit}," including information about
@@ -44,8 +47,10 @@ cmats[[5]] <- matrix(c(169,53,53,25,34,168,69,29,38,48,180,34,19,44,60,177),nrow
 # fit the model to data
 fitted_model <- grt_wind_fit(cmats)
 
-#' # run the wald tests
+# run the wald tests
+\dontrun{
 fitted_model <- wald(fitted_model, cmats)
+}
 
 # see the results
 summary(fitted_model)
@@ -57,4 +62,3 @@ Soto, F. A., Musgrave, R., Vucovich, L., & Ashby, F. G. (2015).
   examining perceptual and decisional interactions with an application to
   face perception. \emph{Psychonomic Bulletin & Review, 22}(1), 88-111.
 }
-

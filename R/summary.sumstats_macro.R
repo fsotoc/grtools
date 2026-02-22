@@ -1,5 +1,6 @@
 #' @export
-summary.sumstats_macro <- function(macro){
+summary.sumstats_macro <- function(object, ...){
+  macro <- object
   # summary for macroanalyses
   # code for conclusions
   conc <- c("yes", "NO", "?", "no?", "yes?", "NO", "YES")

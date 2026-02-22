@@ -6,11 +6,11 @@
 #' @param labels Optional names for the labels of dimensions A and B
 #' @param ellipse_width Parameter controlling the width of the drawn ellipses
 #' @export
-plot.grt_hm_fit <- function(model, labels=c("dim A", "dim B"), ellipse_width=0.8){
+plot.grt_hm_fit <- function(x, labels=c("dim A", "dim B"), ellipse_width=0.8, ...){
   # ellipse_width determines the width of the ellipses
   # labels determines the labels for each axis
   
-  model <- model$best_model
+  model <- x$best_model
   
   
   plot.new()

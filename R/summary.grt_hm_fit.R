@@ -1,5 +1,6 @@
 #' @export
-summary.grt_hm_fit <- function(hm_list) {
+summary.grt_hm_fit <- function(object, ...) {
+  hm_list <- object
   
   if (hm_list$best_model$convergence==0){
     cat("The optimization algorithm was successful\n\n")
